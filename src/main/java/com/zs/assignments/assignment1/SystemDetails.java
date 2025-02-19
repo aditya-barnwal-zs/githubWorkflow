@@ -1,4 +1,4 @@
-package com.zs.assignment1.system;
+package com.zs.assignments.assignment1;
 
 import java.io.File;
 

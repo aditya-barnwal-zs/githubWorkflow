@@ -1,5 +1,4 @@
-package com.zs.assignment1;
-import com.zs.assignment1.system.SystemDetails;
+package com.zs.assignments.assignment1;
 
 
 public class SystemInfo {
