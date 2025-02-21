@@ -50,7 +50,7 @@ public class Services {
         int[][] result = new int[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                result[i][j] = operation.apply(A[i][i], B[i][j]);
+                result[i][j] = operation.apply(A[i][j], B[i][j]);
             }
         }
         return result;
@@ -58,7 +58,6 @@ public class Services {
 
     public int[][] multiplicationOfMatrices(int[][] A, int[][] B) {
         int rowA = A.length;
-        int columnA = A[0].length;
         int rowB = B.length;
         int columnB = B[0].length;
 
@@ -89,7 +88,7 @@ public class Services {
         int rows = A.length;
         int columns = A[0].length;
 
-        int[][] result = new int[rows][columns];
+        int[][] result = new int[columns][rows];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 result[j][i] = A[i][j];
