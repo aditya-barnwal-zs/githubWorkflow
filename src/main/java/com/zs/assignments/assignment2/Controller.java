@@ -63,7 +63,7 @@ public class Controller {
             }
             case 5: {
                 int[][] A = services.takeInput();
-                services.printMatrix(services.transposOfMatrix(A));
+                services.printMatrix(services.transposeOfMatrix(A));
                 break;
             }
             case 6: {
