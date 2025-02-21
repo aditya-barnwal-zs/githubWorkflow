@@ -1,5 +1,6 @@
 package com.zs.assignments.assignment2;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 import java.util.function.BiFunction;
 
@@ -20,19 +21,29 @@ public class Services {
     }
 
     public int[][] takeInput() {
-        System.out.println("Enter the number of rows: ");
-        int rows = sc.nextInt();
-        System.out.println("Enter the number of columns: ");
-        int columns = sc.nextInt();
-        System.out.println("Enter the Matrix: ");
-        int[][] matrix = new int[rows][columns];
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                matrix[i][j] = sc.nextInt();
+        try {
+            System.out.println("Enter the number of rows: ");
+            int rows = sc.nextInt();
+            System.out.println("Enter the number of columns: ");
+            int columns = sc.nextInt();
+            if (rows <= 0 || columns <= 0) {
+                throw new IllegalArgumentException("Rows or Columns can't be zero or negative");
             }
+
+            System.out.println("Enter the Matrix: ");
+            int[][] matrix = new int[rows][columns];
+
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    matrix[i][j] = sc.nextInt();
+                }
+            }
+            return matrix;
+        } catch (IllegalArgumentException error) {
+            System.out.println(error.getMessage());
+            System.out.println("Enter the details again");
+            return takeInput();
         }
-        return matrix;
     }
 
     public int add(int a, int b) {
@@ -84,7 +95,7 @@ public class Services {
         return result;
     }
 
-    public int[][] transposOfMatrix(int[][] A) {
+    public int[][] transposeOfMatrix(int[][] A) {
         int rows = A.length;
         int columns = A[0].length;
 
