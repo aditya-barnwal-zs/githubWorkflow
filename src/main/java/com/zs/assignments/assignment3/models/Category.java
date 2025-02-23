@@ -9,9 +9,10 @@ import java.util.ArrayList;
 @Setter
 public class Category extends Entity {
 
+    ArrayList<SubCategory> subCategories;
+
     public Category(String name) {
         super(name);
+        this.subCategories = new ArrayList<>();
     }
-
-    ArrayList<SubCategory> subCategories;
 }
