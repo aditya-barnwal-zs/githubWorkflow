@@ -51,7 +51,7 @@ public class Controller {
             case 3: {
                 System.out.println("Enter the category: ");
                 String categoryName = sc.next();
-                if (categoryServices.isCategoryExist(catalogue, categoryName)) {
+                if (!categoryServices.isCategoryExist(catalogue, categoryName)) {
                     System.out.println("Category do not exist");
                     return;
                 }
@@ -62,7 +62,7 @@ public class Controller {
             case 4: {
                 System.out.println("Enter the category: ");
                 String categoryName = sc.next();
-                if (categoryServices.isCategoryExist(catalogue, categoryName)) {
+                if (!categoryServices.isCategoryExist(catalogue, categoryName)) {
                     System.out.println("Category do not exist");
                     return;
                 }
@@ -85,7 +85,7 @@ public class Controller {
             case 6: {
                 System.out.println("Enter the category: ");
                 String categoryName = sc.next();
-                if (categoryServices.isCategoryExist(catalogue, categoryName)) {
+                if (!categoryServices.isCategoryExist(catalogue, categoryName)) {
                     System.out.println("Category do not exist");
                     return;
                 }
@@ -96,7 +96,7 @@ public class Controller {
             case 7: {
                 System.out.println("Enter the category: ");
                 String categoryName = sc.next();
-                if (categoryServices.isCategoryExist(catalogue, categoryName)) {
+                if (!categoryServices.isCategoryExist(catalogue, categoryName)) {
                     System.out.println("Category do not exist");
                     return;
                 }

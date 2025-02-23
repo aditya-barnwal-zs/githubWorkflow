@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class CatalogueServices {
     public void viewCatalogue(ArrayList<Category> catalogue) {
         System.out.println("Catalogue " + catalogue.size());
-        String structure = "      ├── ";
 
         for (Category category : catalogue) {
             System.out.println("   ├── " + category.getName());
@@ -48,13 +47,13 @@ public class CatalogueServices {
                 "3 step filteration",
                 true);
 
-        ArrayList<Product> productArray = new ArrayList<Product>();
+        ArrayList<Product> productArray = new ArrayList<>();
         productArray.add(product);
         productArray.add(product2);
 
         subCategory.setProducts(productArray);
 
-        ArrayList<SubCategory> subcategoryArray = new ArrayList<SubCategory>();
+        ArrayList<SubCategory> subcategoryArray = new ArrayList<>();
         subcategoryArray.add(subCategory);
 
         category.setSubCategories(subcategoryArray);
