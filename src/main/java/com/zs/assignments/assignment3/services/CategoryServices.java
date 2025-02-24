@@ -9,10 +9,7 @@ import java.util.Scanner;
 public class CategoryServices {
     Scanner sc = new Scanner(System.in);
 
-    public void addCategory(ArrayList<Category> catalogue) {
-
-        System.out.println("Enter the new category name: ");
-        String categoryName = sc.next();
+    public void addCategory(ArrayList<Category> catalogue, String categoryName) {
 
         for (Category currentCategory : catalogue) {
             if (Objects.equals(currentCategory.getName(), categoryName)) {
@@ -24,10 +21,7 @@ public class CategoryServices {
         catalogue.add(newCategory);
     }
 
-    public void deleteCategory(ArrayList<Category> catalogue) {
-
-        System.out.println("Enter the category name: ");
-        String categoryName = sc.next();
+    public void deleteCategory(ArrayList<Category> catalogue, String categoryName) {
 
         for (Category currentCategory : catalogue) {
             if (Objects.equals(currentCategory.getName(), categoryName)) {

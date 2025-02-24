@@ -45,9 +45,12 @@ public class Controller {
                 catalogueServices.viewCatalogue(catalogue);
                 break;
 
-            case 2:
-                categoryServices.addCategory(catalogue);
+            case 2: {
+                System.out.println("Enter the new category name: ");
+                String categoryName = sc.next();
+                categoryServices.addCategory(catalogue, categoryName);
                 break;
+            }
             case 3: {
                 System.out.println("Enter the category: ");
                 String categoryName = sc.next();
@@ -79,7 +82,9 @@ public class Controller {
                 break;
             }
             case 5: {
-                categoryServices.deleteCategory(catalogue);
+                System.out.println("Enter the category name: ");
+                String categoryName = sc.next();
+                categoryServices.deleteCategory(catalogue, categoryName);
                 break;
             }
             case 6: {
