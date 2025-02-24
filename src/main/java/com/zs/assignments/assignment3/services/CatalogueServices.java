@@ -17,11 +17,11 @@ public class CatalogueServices {
                 System.out.println("   |   ├── " + subCategory.getName());
 
                 for (Product product : subCategory.getProducts()) {
-                    System.out.println("   |      |   ├── " + product.getName());
-                    System.out.println("   |      |     ├── " + product.getPrice());
-                    System.out.println("   |      |     ├── " + product.getBrand());
-                    System.out.println("   |      |     ├── " + product.getDescription());
-                    System.out.println("   |      |     ├── " + product.isReturnable());
+                    System.out.println("   |   |   ├── " + product.getName());
+                    System.out.println("   |   |     ├── " + product.getPrice());
+                    System.out.println("   |   |     ├── " + product.getBrand());
+                    System.out.println("   |   |     ├── " + product.getDescription());
+                    System.out.println("   |   |     ├── " + product.isReturnable());
                 }
             }
         }
@@ -33,7 +33,7 @@ public class CatalogueServices {
 
         Category category = new Category("Electronics");
         SubCategory subCategory = new SubCategory(
-                "Home Applainces");
+                "Home-Appliances");
         Product product = new Product(
                 "Chimney",
                 12000,
@@ -41,10 +41,10 @@ public class CatalogueServices {
                 "auto clean",
                 false);
         Product product2 = new Product(
-                "Water Purifer",
+                "Water-Purifier",
                 10000,
                 "Livpure",
-                "3 step filteration",
+                "3 step filtration",
                 true);
 
         ArrayList<Product> productArray = new ArrayList<>();
