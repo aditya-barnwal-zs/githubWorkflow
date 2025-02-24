@@ -49,6 +49,6 @@ public class CategoryServices {
                 return currentCategory;
             }
         }
-        return new Category("NULL");
+        return null;
     }
 }

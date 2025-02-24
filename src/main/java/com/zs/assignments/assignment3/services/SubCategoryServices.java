@@ -57,6 +57,6 @@ public class SubCategoryServices {
                 return currentSubCategory;
             }
         }
-        return new SubCategory("NULL");
+        return null;
     }
 }
