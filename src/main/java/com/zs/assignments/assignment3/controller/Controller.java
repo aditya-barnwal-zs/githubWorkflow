@@ -78,7 +78,24 @@ public class Controller {
                     return;
                 }
                 SubCategory subCategory = subCategoryServices.getSubCategory(category, subCategoryName);
-                productServices.addProduct(subCategory);
+                String name;
+                String brand;
+                String description;
+                int price;
+                boolean isReturnable;
+
+                System.out.println("Enter the new product details: ");
+                System.out.println("Enter the Name: ");
+                name = sc.next();
+                System.out.println("Enter the Brand: ");
+                brand = sc.next();
+                System.out.println("Enter the Description: ");
+                description = sc.nextLine();
+                System.out.println("Enter the Price: ");
+                price = sc.nextInt();
+                System.out.println("Is the product returnable: Yes or Not ");
+                isReturnable = sc.nextBoolean();
+                productServices.addProduct(subCategory, name, brand, description, price, isReturnable);
                 break;
             }
             case 5: {
@@ -113,8 +130,11 @@ public class Controller {
                     System.out.println("Sub-Category do not exist");
                     return;
                 }
+                System.out.println("Enter the Product name: ");
+                String productName;
+                productName = sc.next();
                 SubCategory subCategory = subCategoryServices.getSubCategory(category, subCategoryName);
-                productServices.deleteProduct(subCategory);
+                productServices.deleteProduct(subCategory, productName);
                 break;
             }
             case 8:
