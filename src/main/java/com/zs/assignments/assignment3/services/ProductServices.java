@@ -5,7 +5,6 @@ import com.zs.assignments.assignment3.models.SubCategory;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class ProductServices {
 

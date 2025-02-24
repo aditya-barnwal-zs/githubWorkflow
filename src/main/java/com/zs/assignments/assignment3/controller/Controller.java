@@ -58,8 +58,10 @@ public class Controller {
                     System.out.println("Category do not exist");
                     return;
                 }
-                Category category = categoryServices.getCategory(catalogue, categoryName);
-                subCategoryServices.addSubCategory(category);
+                System.out.println("Enter the new Sub-Category name: ");
+                String newSubCategoryName = sc.next();
+                Category category = categoryServices.findCategoryByName(catalogue, categoryName);
+                subCategoryServices.addSubCategory(category, newSubCategoryName);
                 break;
             }
             case 4: {
@@ -69,7 +71,7 @@ public class Controller {
                     System.out.println("Category do not exist");
                     return;
                 }
-                Category category = categoryServices.getCategory(catalogue, categoryName);
+                Category category = categoryServices.findCategoryByName(catalogue, categoryName);
 
                 System.out.println("Enter the sub-category: ");
                 String subCategoryName = sc.next();
@@ -77,7 +79,7 @@ public class Controller {
                     System.out.println("Sub-Category do not exist");
                     return;
                 }
-                SubCategory subCategory = subCategoryServices.getSubCategory(category, subCategoryName);
+                SubCategory subCategory = subCategoryServices.findSubCategoryByName(category, subCategoryName);
                 String name;
                 String brand;
                 String description;
@@ -107,22 +109,24 @@ public class Controller {
             case 6: {
                 System.out.println("Enter the category: ");
                 String categoryName = sc.next();
-                if (!categoryServices.isCategoryExist(catalogue, categoryName)) {
+                if (categoryServices.isCategoryExist(catalogue, categoryName)) {
                     System.out.println("Category do not exist");
                     return;
                 }
-                Category category = categoryServices.getCategory(catalogue, categoryName);
-                subCategoryServices.deleteSubCategory(category);
+                System.out.println("Enter the Sub-Category name: ");
+                String SubCategoryName = sc.next();
+                Category category = categoryServices.findCategoryByName(catalogue, categoryName);
+                subCategoryServices.deleteSubCategory(category, SubCategoryName);
                 break;
             }
             case 7: {
                 System.out.println("Enter the category: ");
                 String categoryName = sc.next();
-                if (!categoryServices.isCategoryExist(catalogue, categoryName)) {
+                if (categoryServices.isCategoryExist(catalogue, categoryName)) {
                     System.out.println("Category do not exist");
                     return;
                 }
-                Category category = categoryServices.getCategory(catalogue, categoryName);
+                Category category = categoryServices.findCategoryByName(catalogue, categoryName);
 
                 System.out.println("Enter the sub-category: ");
                 String subCategoryName = sc.next();
@@ -133,7 +137,7 @@ public class Controller {
                 System.out.println("Enter the Product name: ");
                 String productName;
                 productName = sc.next();
-                SubCategory subCategory = subCategoryServices.getSubCategory(category, subCategoryName);
+                SubCategory subCategory = subCategoryServices.findSubCategoryByName(category, subCategoryName);
                 productServices.deleteProduct(subCategory, productName);
                 break;
             }

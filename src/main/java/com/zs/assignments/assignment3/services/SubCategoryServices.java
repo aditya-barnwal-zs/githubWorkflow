@@ -5,54 +5,42 @@ import com.zs.assignments.assignment3.models.SubCategory;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class SubCategoryServices {
-    Scanner sc= new Scanner(System.in);
-    public void addSubCategory(Category category){
-        System.out.println("Enter the new Sub-Category name: ");
-        String newSubCategoryName= sc.next();
 
-        if(isSubCategoryExist(category, newSubCategoryName)){
+    public void addSubCategory(Category category, String newSubCategoryName) {
+
+        if (isSubCategoryExist(category, newSubCategoryName)) {
             System.out.println("Sub-Category already exist");
             return;
         }
-        SubCategory newSubCategory=new SubCategory(newSubCategoryName);
-        ArrayList<SubCategory> allSubCategoriesList= category.getSubCategories();
+        SubCategory newSubCategory = new SubCategory(newSubCategoryName);
+        ArrayList<SubCategory> allSubCategoriesList = category.getSubCategories();
 
         allSubCategoriesList.add(newSubCategory);
     }
 
-    public void deleteSubCategory(Category category){
-        System.out.println("Enter the Sub-Category name: ");
-        String SubCategoryName= sc.next();
+    public void deleteSubCategory(Category category, String subCategoryName) {
 
-        ArrayList<SubCategory> allSubCategoriesList= category.getSubCategories();
-        for(SubCategory currentSubCategory: allSubCategoriesList) {
-            if (Objects.equals(currentSubCategory.getName(), SubCategoryName)) {
-                allSubCategoriesList.remove(currentSubCategory);
-                System.out.println("Sub-Category " + SubCategoryName + "deleted succesfully");
-                return;
-            }
+        ArrayList<SubCategory> allSubCategoriesList = category.getSubCategories();
+        SubCategory subCategory = findSubCategoryByName(category, subCategoryName);
+        if (findSubCategoryByName(category, subCategoryName) != null) {
+            allSubCategoriesList.remove(subCategory);
+            System.out.println("Sub-Category " + subCategoryName + "deleted succesfully");
+            return;
         }
         System.out.println("Sub-Category do not exist");
     }
 
-    public boolean isSubCategoryExist(Category category, String subCategoryName){
-        ArrayList<SubCategory> allSubCategoriesList= category.getSubCategories();
+    public boolean isSubCategoryExist(Category category, String subCategoryName) {
+        return findSubCategoryByName(category, subCategoryName) != null;
 
-        for(SubCategory currentSubCategory: allSubCategoriesList) {
-            if (Objects.equals(currentSubCategory.getName(), subCategoryName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
-    public SubCategory getSubCategory(Category category, String subCategoryName){
-        ArrayList<SubCategory> allSubCategoriesList= category.getSubCategories();
+    public SubCategory findSubCategoryByName(Category category, String subCategoryName) {
 
-        for(SubCategory currentSubCategory: allSubCategoriesList) {
+        ArrayList<SubCategory> allSubCategoriesList = category.getSubCategories();
+        for (SubCategory currentSubCategory : allSubCategoriesList) {
             if (Objects.equals(currentSubCategory.getName(), subCategoryName)) {
                 return currentSubCategory;
             }
