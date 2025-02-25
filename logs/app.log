@@ -1,0 +1,28 @@
+2025-02-25 14:58:15 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-25 14:58:15 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:58:15 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-25 14:58:59 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-25 14:58:59 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:58:59 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-25 14:59:30 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:59:30 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-25 14:59:41 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-25 14:59:44 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-25 14:59:44 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──grocery
+2025-02-25 14:59:44 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:59:44 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-25 14:59:49 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-25 14:59:52 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-25 14:59:52 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──fashion
+2025-02-25 14:59:52 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:59:52 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
