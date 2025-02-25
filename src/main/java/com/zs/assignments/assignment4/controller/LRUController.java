@@ -49,7 +49,7 @@ public class LRUController {
                 }
                 if (subCategoryLRU.get(name) != null) {
                     logger.info("Found category in SubCategory LRU");
-                    lruService.print(categoryLRU.get(name));
+                    lruService.print(subCategoryLRU.get(name));
                     return;
                 }
                 lruService.searchAndUpdate(name, catalogue, categoryLRU, subCategoryLRU, capacity);
