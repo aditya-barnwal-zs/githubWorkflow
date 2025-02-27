@@ -4,12 +4,9 @@ import java.util.regex.Pattern;
 
 public class ParserService {
 
-    public String checkCommit(String commit){
+    public Boolean checkCommit(String commit){
         String commitRegex="commit [a-zA-Z0-9]{40}";
-        if(!Pattern.matches(commitRegex,commit))
-            return null;
-        String[] parts= commit.split(" ");
-        return parts[1];
+        return Pattern.matches(commitRegex,commit);
     }
 
     public Boolean checkAuthor(String author){
@@ -22,7 +19,7 @@ public class ParserService {
         return Pattern.matches(dateRegex, date);
     }
 
-    public Boolean checkmessage(String message){
+    public Boolean checkMessage(String message){
         String messageRegex="    .+";
         return Pattern.matches(messageRegex, messageRegex);
     }
