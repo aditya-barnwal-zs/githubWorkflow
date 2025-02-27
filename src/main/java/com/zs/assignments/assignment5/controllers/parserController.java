@@ -1,4 +1,4 @@
-package com.zs.assignments.assignment5.Controller;
+package com.zs.assignments.assignment5.controllers;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
