@@ -11,26 +11,27 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class LRUService {
-    Logger logger = LogManager.getLogger();
+
+    final static Logger LOGGER = LogManager.getLogger();
 
     public void searchAndUpdate(String name, ArrayList<Category> catalogue, LinkedHashMap<String, Category> categoryLRU, LinkedHashMap<String, SubCategory> subCategoryLRU, int capacity) {
         for (Category currentCategory : catalogue) {
             if (Objects.equals(currentCategory.getName(), name)) {
-                logger.info("Category not found in cache");
+                LOGGER.info("Category not found in cache");
                 print(currentCategory);
                 updateCategoryLRU(categoryLRU, currentCategory, capacity);
                 return;
             }
             for (SubCategory currentSubCategory : currentCategory.getSubCategories()) {
                 if (Objects.equals(currentSubCategory.getName(), name)) {
-                    logger.info("Sub Category not found in cache");
+                    LOGGER.info("Sub Category not found in cache");
                     print(currentSubCategory);
                     updateSubCategoryLRU(subCategoryLRU, currentSubCategory, capacity);
                     return;
                 }
             }
         }
-        logger.warn("Do not exist");
+        LOGGER.warn("Do not exist");
     }
 
     public void updateCategoryLRU(LinkedHashMap<String, Category> categoryLRU, Category category, int capacity) {
@@ -48,22 +49,22 @@ public class LRUService {
     }
 
     public void print(Category category) {
-        logger.info("├──" + category.getName());
+        LOGGER.info("├──" + category.getName());
         for (SubCategory currentCategory : category.getSubCategories())
             print(currentCategory);
     }
 
     public void print(SubCategory subCategory) {
-        logger.info("   ├── " + subCategory.getName());
+        LOGGER.info("   ├── " + subCategory.getName());
         for (Product currentProduct : subCategory.getProducts())
             print(currentProduct);
     }
 
     public void print(Product product) {
-        logger.info("   |   ├── " + product.getName());
-        logger.info("   |     ├── " + product.getPrice());
-        logger.info("   |     ├── " + product.getBrand());
-        logger.info("   |     ├── " + product.getDescription());
-        logger.info("   |     ├── " + product.isReturnable());
+        LOGGER.info("   |   ├── " + product.getName());
+        LOGGER.info("   |     ├── " + product.getPrice());
+        LOGGER.info("   |     ├── " + product.getBrand());
+        LOGGER.info("   |     ├── " + product.getDescription());
+        LOGGER.info("   |     ├── " + product.isReturnable());
     }
 }
