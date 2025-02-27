@@ -7,13 +7,15 @@ import lombok.Setter;
 @Setter
 public class Commit {
     String commitHash;
-    String author;
+    String authorName;
+    String authorEmail;
     String date;
     String message;
 
-    public Commit(String commitHash, String author, String date, String message) {
+    public Commit(String commitHash, String authorName, String authorEmail, String date, String message) {
         this.commitHash = commitHash;
-        this.author = author;
+        this.authorName = authorName;
+        this.authorEmail= authorEmail;
         this.date = date;
         this.message = message;
     }
