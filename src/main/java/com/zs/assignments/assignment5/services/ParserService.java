@@ -11,4 +11,9 @@ public class ParserService {
         String[] parts= commit.split(" ");
         return parts[1];
     }
+
+    public Boolean checkAuthor(String author){
+        String authorRegex="Author: [a-zA-Z\\s]+ <[a-z.]+@[a-z]+.com>";
+        return Pattern.matches(authorRegex,author);
+    }
 }
