@@ -16,4 +16,9 @@ public class ParserService {
         String authorRegex="Author: [a-zA-Z\\s]+ <[a-z.]+@[a-z]+.com>";
         return Pattern.matches(authorRegex,author);
     }
+
+    public Boolean checkDate(String date){
+        String dateRegex="Date:   \\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\\b \\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\b \\b(0[1-9]|[1-2][0-9]|3[0-1])\\b \\b([0-1][0-9]|[2][2-4])\\b:[0-5][0-9]:[0-5][0-9] [1-9][0-9]{3} \\+0530";
+        return Pattern.matches(dateRegex, date);
+    }
 }
