@@ -83,6 +83,25 @@ public class ParserService {
 
     public Boolean checkMessage(String message){
         String messageRegex="    .+";
-        return Pattern.matches(messageRegex, messageRegex);
+        return Pattern.matches(messageRegex, message);
+    }
+
+    public void countOfCommits(HashMap<String, ArrayList<Commit>> record){
+        for(Map.Entry<String, ArrayList<Commit>> entry : record.entrySet()){
+            ArrayList<Commit> userCommits = entry.getValue();
+            String authorEmail= entry.getKey();
+            String authorName = userCommits.getFirst().getAuthorName();
+
+            HashMap<String, Integer> commitCount = new HashMap<>();
+            for(Commit commit: userCommits){
+                String date= commit.getDate();
+                commitCount.put(date, commitCount.getOrDefault(date, 0) + 1);
+            }
+            LOGGER.info(authorName + " " + authorEmail);
+            commitCount.forEach((date, count) ->
+                    LOGGER.info("   ├── " + date + " - " + count)
+            );
+
+        }
     }
 }
