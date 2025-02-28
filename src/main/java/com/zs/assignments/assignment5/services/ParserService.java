@@ -1,107 +1,88 @@
 package com.zs.assignments.assignment5.services;
 
-import com.zs.assignments.assignment5.models.Commit;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 
+/**
+ * Provides methods to check format and extract data from the given line
+ */
 public class ParserService {
 
-    final static Logger LOGGER = LogManager.getLogger();
-    final static HashMap<String, String> monthNumber = new HashMap<>() {{
-        put("Jan", "01"); put("Feb", "02"); put("Mar", "03"); put("Apr", "04");
-        put("May", "05"); put("Jun", "06"); put("Jul", "07"); put("Aug", "08");
-        put("Sep", "09"); put("Oct", "10"); put("Nov", "11"); put("Dec", "12");
+    /**
+     * Mapping of month name to numerical representations.
+     */
+    final static HashMap<String, String> MONTH_NUMBER = new HashMap<>() {{
+        put("Jan", "01");
+        put("Feb", "02");
+        put("Mar", "03");
+        put("Apr", "04");
+        put("May", "05");
+        put("Jun", "06");
+        put("Jul", "07");
+        put("Aug", "08");
+        put("Sep", "09");
+        put("Oct", "10");
+        put("Nov", "11");
+        put("Dec", "12");
     }};
 
-    public String extractCommitHash(String commitLine){
+    /**
+     * Validates whether a given line matches to given regex pattern.
+     *
+     * @param line  the input line to validate
+     * @param regex the regex pattern to match against
+     * @return true if the line matches the pattern, false otherwise
+     */
+    public boolean checkFormat(String line, String regex) {
+        return line != null && Pattern.matches(regex, line);
+    }
+
+    /**
+     * Validates whether a given string represents a valid date in the format YYYY-MM-DD.
+     *
+     * @param date the date string to validate
+     * @return true if the date is valid, false otherwise
+     */
+    public boolean isValidDate(String date) {
+        String format = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        sdf.setLenient(false); // Ensures strict date validation
+        try {
+            sdf.parse(date);
+            return true;
+        } catch (java.text.ParseException e) {
+            return false;
+        }
+    }
+
+    public String extractCommitHash(String commitLine) {
         String[] parts = commitLine.split(" ");
         return parts[1];
     }
 
-    public String extractAuhtorName(String authorLine){
+    public String extractAuthorName(String authorLine) {
         String[] parts = authorLine.split(" ");
-        String authorName= parts[1];
-        for(int i=2;i< parts.length-1; i++)
-            authorName+= " " + (parts[i]);
-
+        String authorName = parts[1];
+        for (int i = 2; i < parts.length - 1; i++)
+            authorName += " " + (parts[i]);
         return authorName;
     }
 
-    public String extractAuhtorEmail(String authorLine){
+    public String extractAuthorEmail(String authorLine) {
         String[] parts = authorLine.split(" ");
-        int emailIndex= parts.length-1;
-        String email= parts[emailIndex].substring(0,parts[emailIndex].length()-1);
-
+        int emailIndex = parts.length - 1;
+        String email = parts[emailIndex].substring(1, parts[emailIndex].length() - 1);
         return email;
     }
 
-    public String extractDate(String dateLine){
+    public String extractDate(String dateLine) {
         String[] parts = dateLine.split(" ");
         // Format YYYY-MM-DD
-        String year= parts[7];
-        String month= monthNumber.get(parts[4]);
+        String year = parts[7];
+        String month = MONTH_NUMBER.get(parts[4]);
         String dateofMonth = parts[5];
-        String date= year + "-" + month  + "-" + dateofMonth;
-
+        String date = year + "-" + month + "-" + dateofMonth;
         return date;
-    }
-    public void printRecord(HashMap<String, ArrayList<Commit>> record) {
-        for (Map.Entry<String, ArrayList<Commit>> entry : record.entrySet()) {
-            String email = entry.getKey();
-            ArrayList<Commit> commits = entry.getValue();
-
-            LOGGER.info("Author Email: " + email);
-            for (Commit commit : commits) {
-                LOGGER.info("  Commit Hash: " + commit.getCommitHash());
-                LOGGER.info("  Author: " + commit.getAuthorName());
-                LOGGER.info("  Date: " + commit.getDate());
-                LOGGER.info("  Message: " + commit.getMessage());
-                LOGGER.info("");
-            }
-        }
-    }
-
-    public Boolean checkCommit(String commit){
-        String commitRegex="commit [a-zA-Z0-9]{40}";
-        return Pattern.matches(commitRegex,commit);
-    }
-
-    public Boolean checkAuthor(String author){
-        String authorRegex="Author: [a-zA-Z\\s]+ <[a-z.]+@[a-z]+.com>";
-        return Pattern.matches(authorRegex,author);
-    }
-
-    public Boolean checkDate(String date){
-        String dateRegex="Date:   \\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun)\\b \\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\b \\b(0[1-9]|[1-2][0-9]|3[0-1])\\b \\b([0-1][0-9]|[2][2-4])\\b:[0-5][0-9]:[0-5][0-9] [1-9][0-9]{3} \\+0530";
-        return Pattern.matches(dateRegex, date);
-    }
-
-    public Boolean checkMessage(String message){
-        String messageRegex="    .+";
-        return Pattern.matches(messageRegex, message);
-    }
-
-    public void countOfCommits(HashMap<String, ArrayList<Commit>> record){
-        for(Map.Entry<String, ArrayList<Commit>> entry : record.entrySet()){
-            ArrayList<Commit> userCommits = entry.getValue();
-            String authorEmail= entry.getKey();
-            String authorName = userCommits.getFirst().getAuthorName();
-
-            HashMap<String, Integer> commitCount = new HashMap<>();
-            for(Commit commit: userCommits){
-                String date= commit.getDate();
-                commitCount.put(date, commitCount.getOrDefault(date, 0) + 1);
-            }
-            LOGGER.info(authorName + " " + authorEmail);
-            commitCount.forEach((date, count) ->
-                    LOGGER.info("   ├── " + date + " - " + count)
-            );
-
-        }
     }
 }
