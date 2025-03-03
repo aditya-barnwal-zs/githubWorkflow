@@ -4,6 +4,7 @@ import com.zs.assignments.assignment5.exceptions.FormatNotCorrectException;
 import com.zs.assignments.assignment5.models.Commit;
 import com.zs.assignments.assignment5.services.AnalyticService;
 import com.zs.assignments.assignment5.services.ParserService;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import static com.zs.assignments.assignment5.config.Regex.regex;
+
 /**
  * Controller class responsible for handling the parsing logic.
  * It reads the file, processes commits, and provides analytics based on user input.
@@ -21,14 +24,6 @@ import java.util.Scanner;
 public class ParserController {
     final static Logger LOGGER = LogManager.getLogger();
     final static Scanner SCANNER = new Scanner(System.in);
-    final static String DAYS = "Mon|Tue|Wed|Thu|Fri|Sat|Sun";
-    final static String MONTHS = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec";
-    final static HashMap<String, String> regex = new HashMap<>() {{
-        put("commitLine", "commit [a-zA-Z0-9]{40}");
-        put("authorLine", "Author: [a-zA-Z-\\s]+ <[a-z.]+@[a-z]+.com>");
-        put("dateLine", "Date:   (" + DAYS + ") (" + MONTHS + ") (0[1-9]|[1-2][0-9]|3[0-1]) ([0-1][0-9]|[2][2-4]):[0-5][0-9]:[0-5][0-9] [1-9][0-9]{3} \\+0530");
-        put("messageLine", "    .+");
-    }};
 
     ParserService parserService = new ParserService();
     AnalyticService analyticService = new AnalyticService();
@@ -69,39 +64,48 @@ public class ParserController {
             case 1: {
                 LOGGER.info("Enter the date:");
                 String sinceDate = SCANNER.next();
-                if (!parserService.isValidDate(sinceDate)) {
-                    LOGGER.warn("Date format is not correct");
+                if (!isDateCorrect(sinceDate))
                     return;
-                }
                 analyticService.countOfCommit(record, sinceDate);
                 break;
             }
             case 2: {
                 LOGGER.info("Enter the date:");
                 String sinceDate = SCANNER.next();
-                if (!parserService.isValidDate(sinceDate)) {
-                    LOGGER.warn("Date format is not correct");
+                if (!isDateCorrect(sinceDate))
                     return;
-                }
                 analyticService.countOfCommitsForEachDay(record, sinceDate);
                 break;
             }
             case 3: {
                 LOGGER.info("Enter the date:");
                 String sinceDate = SCANNER.next();
-                if (!parserService.isValidDate(sinceDate)) {
-                    LOGGER.warn("Date format is not correct");
+                if (!isDateCorrect(sinceDate))
                     return;
-                }
                 analyticService.detectDevWithInactivity(record, sinceDate);
                 break;
             }
             case 4:
                 LOGGER.info("Exiting... ");
+                break;
             default:
                 LOGGER.warn("Choose correct option");
                 break;
         }
+    }
+
+    /**
+     * Check if whether Date format is correct or not, if not correct then print the message
+     *
+     * @param date the date string to validate
+     * @return true if the date is valid, false otherwise
+     */
+    private boolean isDateCorrect(String date) {
+        if (!parserService.isValidDate(date)) {
+            LOGGER.warn("Date format is not correct");
+            return false;
+        }
+        return true;
     }
 
     /**
