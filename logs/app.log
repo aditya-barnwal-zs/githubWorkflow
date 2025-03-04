@@ -1,0 +1,144 @@
+2025-02-25 14:58:15 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-25 14:58:15 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:58:15 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-25 14:58:59 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-25 14:58:59 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:58:59 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-25 14:59:30 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:59:30 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-25 14:59:41 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-25 14:59:44 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-25 14:59:44 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──grocery
+2025-02-25 14:59:44 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:59:44 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-25 14:59:49 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-25 14:59:52 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-25 14:59:52 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──fashion
+2025-02-25 14:59:52 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-25 14:59:52 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Apply operation on Catalogue 
+2. Search a Category or Sub-Category 
+3. Exit
+2025-02-27 18:42:13 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-27 18:42:13 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:42:13 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:42:20 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──Grocery
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── Home-Appliances
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── Shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 1200
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Killer
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── A good shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── true
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── SmartPhones
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── Shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 1200
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Killer
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── A good shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── true
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── food
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── Shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 1200
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Killer
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── A good shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── true
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── Personal Care
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── Shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 1200
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Killer
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── A good shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── true
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── kids
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── Shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 1200
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Killer
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── A good shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── true
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── Men
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── Shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 1200
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Killer
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── A good shirt
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── true
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:42:23 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:45:43 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-27 18:45:43 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:45:43 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:45:46 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-27 18:45:48 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-27 18:45:48 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──Grocery
+2025-02-27 18:45:48 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:45:48 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:48:03 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-27 18:48:03 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:48:03 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:48:05 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-27 18:48:12 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-27 18:48:12 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──Electronics
+2025-02-27 18:48:12 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:48:12 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:48:57 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-27 18:48:57 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:48:57 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:48:59 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-27 18:49:03 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-27 18:49:03 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──Electronics
+2025-02-27 18:49:03 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:49:03 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:51:22 [main] INFO  com.zs.assignments.assignment4.Main - Program started
+2025-02-27 18:51:22 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:51:22 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:51:25 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService - Category not found in cache
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──Electronics
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── Home-Appliances
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── Chimney
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 12000
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Faber
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── auto clean
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── false
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── SmartPhones
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── IphoneX
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 10000
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Iphone
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── A good phone
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── true
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:51:30 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
+2025-02-27 18:51:35 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Enter the Category or Sub-Category name: 
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - Found category in Category LRU
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService - ├──Electronics
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── Home-Appliances
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── Chimney
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 12000
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Faber
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── auto clean
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── false
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    ├── SmartPhones
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |   ├── IphoneX
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── 10000
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── Iphone
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── A good phone
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.services.LRUService -    |     ├── true
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - What you want to do:
+2025-02-27 18:51:38 [main] INFO  com.zs.assignments.assignment4.controller.LRUController - 1. Search a Category or Sub-Category 
+2. Exit
