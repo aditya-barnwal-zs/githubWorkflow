@@ -1,4 +1,4 @@
-package com.zs.assignments.assignment5.config;
+package com.zs.assignments.assignment5.util;
 
 import java.util.HashMap;
 

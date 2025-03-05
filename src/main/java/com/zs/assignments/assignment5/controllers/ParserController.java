@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import static com.zs.assignments.assignment5.config.Regex.regex;
+import static com.zs.assignments.assignment5.util.Regex.regex;
 
 /**
  * Controller class responsible for handling the parsing logic.
