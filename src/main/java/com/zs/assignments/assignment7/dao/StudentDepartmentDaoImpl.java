@@ -1,4 +1,4 @@
-package com.zs.assignments.assignment7.repositories;
+package com.zs.assignments.assignment7.dao;
 
 import com.zs.assignments.assignment7.config.DatabaseConfig;
 import org.apache.logging.log4j.LogManager;
@@ -11,13 +11,14 @@ import static com.zs.assignments.assignment7.services.StudentService.getRandomDe
 /**
  * Repository class for handling database operations related to the Student-Department association.
  */
-public class StudentDepartmentRepository {
+public class StudentDepartmentDaoImpl implements StudentDepartmentDao {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Connection CONNECTION = DatabaseConfig.getDatabaseConfig().getConnection();
 
     /**
      * Assigns a random department to each student in the database.
      */
+    @Override
     public void assignDepartment() {
 
         try {
@@ -38,7 +39,7 @@ public class StudentDepartmentRepository {
             preparedStatement.executeBatch();
             CONNECTION.commit();
         } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 }
