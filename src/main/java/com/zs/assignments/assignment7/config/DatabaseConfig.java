@@ -10,11 +10,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Manages the database connection using a singleton pattern.
+ * Loads database configurations from a properties file and establishes a connection.
+ */
 public class DatabaseConfig {
     private static final Logger LOGGER = LogManager.getLogger();
     private static Connection connection;
     private static DatabaseConfig databaseConfig;
 
+    /**
+     * Private constructor that initializes the database connection using properties
+     * from the {@code application.properties} file.
+     */
     private DatabaseConfig() {
         try {
             Properties properties = new Properties();
@@ -30,13 +38,17 @@ public class DatabaseConfig {
             } else {
                 System.out.println("Failed to connect!");
             }
-        } catch (SQLException e) {
-            LOGGER.info(e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | IOException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
+    /**
+     * Returns the singleton instance of {@code DatabaseConfig}, ensuring only one
+     * instance of the database configuration is created.
+     *
+     * @return Singleton instance of {@code DatabaseConfig}.
+     */
     public static DatabaseConfig getDatabaseConfig() {
         if (databaseConfig == null) {
             databaseConfig = new DatabaseConfig();
@@ -44,6 +56,11 @@ public class DatabaseConfig {
         return databaseConfig;
     }
 
+    /**
+     * Returns the active database connection instance.
+     *
+     * @return {@code Connection} object representing the database connection.
+     */
     public Connection getConnection() {
         return connection;
     }
