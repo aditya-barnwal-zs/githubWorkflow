@@ -1,8 +1,11 @@
 package com.zs.assignments.assignment7.services;
 
 import com.github.javafaker.Faker;
+import com.zs.assignments.assignment7.dao.StudentDao;
+import com.zs.assignments.assignment7.dao.StudentDaoImpl;
 import com.zs.assignments.assignment7.models.Student;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,6 +14,7 @@ import java.util.Random;
  */
 public class StudentService {
     private static final Faker FAKER = new Faker();
+    StudentDao studentDao = new StudentDaoImpl();
 
     /**
      * Generates a list of one million students with random names and mobile numbers.
@@ -34,5 +38,13 @@ public class StudentService {
     public static int getRandomDepartment() {
         Random random = new Random();
         return random.nextInt(1, 4);
+    }
+
+    public void insertStudentInBulk(ArrayList<Student> studentList) {
+        studentDao.insertStudentInBulk(studentList);
+    }
+
+    public ResultSet getAllStudents() {
+        return studentDao.getAllStudents();
     }
 }

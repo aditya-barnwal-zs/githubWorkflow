@@ -1,5 +1,6 @@
 package com.zs.assignments.assignment7.services;
 
+import com.zs.assignments.assignment7.dao.DepartmentDaoImpl;
 import com.zs.assignments.assignment7.models.Department;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
  * Service class responsible for handling department-related operations.
  */
 public class DepartmentService {
+    DepartmentDaoImpl departmentDaoImpl = new DepartmentDaoImpl();
 
     /**
      * Generates a predefined list of departments.
@@ -20,5 +22,9 @@ public class DepartmentService {
         departmentList.add(new Department(2, "Mech"));
         departmentList.add(new Department(3, "EE"));
         return departmentList;
+    }
+
+    public void addDepartmentInBulk(ArrayList<Department> departmentList) {
+        departmentDaoImpl.addDepartmentInBulk(departmentList);
     }
 }

@@ -7,9 +7,9 @@ build/
 gitlog.txt
 logs
 logs/app.log
-studentData.txt
 students.txt
-students.txt.gz
+compressed.txt.gz
+decompressed.txt
 src/main/resources/application.properties
 
 ### IntelliJ IDEA ###
