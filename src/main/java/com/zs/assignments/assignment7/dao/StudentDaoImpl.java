@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 
+import static com.zs.assignments.assignment7.services.StudentService.getRandomDepartment;
+
 /**
  * Repository class for handling database operations related to the Student entity.
  */
@@ -55,5 +57,33 @@ public class StudentDaoImpl implements StudentDao {
             LOGGER.error(e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * Assigns a random department to each student in the database.
+     */
+    @Override
+    public void assignDepartment() {
+
+        try {
+            String query = "SELECT id from Student";
+            ResultSet studentId;
+            Statement statement = CONNECTION.createStatement();
+            studentId = statement.executeQuery(query);
+
+            String insertQuery = "INSERT INTO StudentDepartment (studentId, departmentId) VALUES (?, ?)";
+            PreparedStatement preparedStatement = CONNECTION.prepareStatement(insertQuery);
+            CONNECTION.setAutoCommit(false);
+
+            while (studentId.next()) {
+                preparedStatement.setInt(1, studentId.getInt("id"));
+                preparedStatement.setInt(2, getRandomDepartment());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+            CONNECTION.commit();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 }

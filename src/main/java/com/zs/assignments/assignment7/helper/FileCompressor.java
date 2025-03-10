@@ -1,4 +1,4 @@
-package com.zs.assignments.assignment7.services;
+package com.zs.assignments.assignment7.helper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +15,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * Service class for handling file-related operations such as saving, compressing, and decompressing student data.
  */
-public class FileService {
+public class FileCompressor {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**

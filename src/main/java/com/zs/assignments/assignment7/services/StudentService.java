@@ -47,4 +47,8 @@ public class StudentService {
     public ResultSet getAllStudents() {
         return studentDao.getAllStudents();
     }
+
+    public void assignDepartment(){
+        studentDao.assignDepartment();
+    }
 }

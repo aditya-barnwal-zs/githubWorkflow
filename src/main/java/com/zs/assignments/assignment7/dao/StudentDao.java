@@ -10,4 +10,6 @@ public interface StudentDao {
 
     public ResultSet getAllStudents();
 
+    public void assignDepartment();
+
 }
