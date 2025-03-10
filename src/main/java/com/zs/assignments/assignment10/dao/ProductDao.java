@@ -4,6 +4,10 @@ import com.zs.assignments.assignment10.models.Product;
 
 import java.sql.ResultSet;
 
+/**
+ * Interface for Product Data Access Object (DAO).
+ * Defines operations for handling Product records in the database.
+ */
 public interface ProductDao {
     ResultSet findAll();
 

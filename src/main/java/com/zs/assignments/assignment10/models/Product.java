@@ -3,6 +3,9 @@ package com.zs.assignments.assignment10.models;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a Product with an ID, name, and price.
+ */
 @Getter
 @Setter
 public class Product {

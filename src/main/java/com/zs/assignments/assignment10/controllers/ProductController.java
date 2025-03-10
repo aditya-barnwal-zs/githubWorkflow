@@ -7,6 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Scanner;
 
+/**
+ * Handles user interactions for managing products.
+ * This class takes input from the user and calls service methods.
+ */
 public class ProductController {
     private final Logger LOGGER = LogManager.getLogger(ProductController.class);
     private final Scanner SC = new Scanner(System.in);
@@ -17,6 +21,9 @@ public class ProductController {
         this.productService = new ProductService();
     }
 
+    /**
+     * This method shows options to the user and handles product operations like view, save, delete, etc.
+     */
     public void applyOperations() {
         LOGGER.info("What you want to do: ");
 
@@ -35,6 +42,10 @@ public class ProductController {
         while (option != 5);
     }
 
+    /**
+     * Handles the operation based on user input.
+     * @param option The user-selected option.
+     */
     public void handleOperation(int option) {
         switch (option) {
             case 1: {

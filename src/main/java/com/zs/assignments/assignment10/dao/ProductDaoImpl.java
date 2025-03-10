@@ -7,14 +7,25 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
+/**
+ * Implements database operations for Product.
+ * Handles CRUD operations using SQL queries.
+ */
 public class ProductDaoImpl implements ProductDao {
     private final Logger LOGGER = LogManager.getLogger(ProductDaoImpl.class);
     private final Connection CONNECTION;
 
+    /**
+     * Constructor to get the database connection.
+     */
     public ProductDaoImpl() {
         CONNECTION = DatabaseConfig.getDatabaseConfig().getConnection();
     }
 
+    /**
+     * Gets all products from the database.
+     * @return ResultSet containing all products.
+     */
     @Override
     public ResultSet findAll() {
         String query = "SELECT * FROM Product";
@@ -27,6 +38,11 @@ public class ProductDaoImpl implements ProductDao {
         return null;
     }
 
+    /**
+     * Finds a product by its ID.
+     * @param id Product ID.
+     * @return Product object if found, otherwise null.
+     */
     @Override
     public Product findById(int id) {
         String query = "SELECT * FROM Product where id = ?";
@@ -46,6 +62,11 @@ public class ProductDaoImpl implements ProductDao {
         return null;
     }
 
+    /**
+     * Inserts a new product into the database.
+     * @param product Product to insert.
+     * @return true if insertion successful, false otherwise.
+     */
     @Override
     public boolean insert(Product product) {
         String query = "INSERT INTO Product VALUES (?, ?, ?)";
@@ -61,6 +82,11 @@ public class ProductDaoImpl implements ProductDao {
         return false;
     }
 
+    /**
+     * Updates an existing product.
+     * @param product Product with updated details.
+     * @return true if update was successful, false otherwise.
+     */
     @Override
     public boolean update(Product product) {
         String query = "UPDATE Product SET name = ?, price = ? WHERE id = ?";
@@ -76,6 +102,11 @@ public class ProductDaoImpl implements ProductDao {
         return false;
     }
 
+    /**
+     * Deletes a product by its ID.
+     * @param id Product ID.
+     * @return true if deletion was successful, false otherwise.
+     */
     public boolean deleteById(int id) {
         String query = "DELETE FROM Product WHERE id = ?";
         try {
