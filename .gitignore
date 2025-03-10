@@ -7,6 +7,10 @@ build/
 gitlog.txt
 logs
 logs/app.log
+students.txt
+compressed.txt.gz
+decompressed.txt
+src/main/resources/application.properties
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
