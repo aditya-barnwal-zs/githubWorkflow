@@ -7,10 +7,19 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
+/**
+ * Implements StudentDao to interact with the database.
+ * Handles operations like inserting and fetching students.
+ */
 public class StudentDaoImpl implements StudentDao {
     private final Logger LOGGER = LogManager.getLogger();
     private final Connection CONNECTION = DatabaseConfig.getDatabaseConfig().getConnection();
 
+    /**
+     * Inserts a new student into the database.
+     * @param student Student object to be inserted.
+     * @return The inserted Student object if successful, otherwise null.
+     */
     @Override
     public Student createStudent(Student student) {
         String query = "INSERT INTO Student(id, firstName, secondName, VALUES ( ?, ?, ?)";
@@ -27,6 +36,11 @@ public class StudentDaoImpl implements StudentDao {
         return null;
     }
 
+    /**
+     * Retrieves a student by their ID.
+     * @param id Student ID.
+     * @return Student object if found, otherwise null.
+     */
     @Override
     public Student getStudentById(int id) {
         String query = "SELECT FROM Student WHERE id = ?";
