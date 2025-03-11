@@ -17,7 +17,7 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.postgresql:postgresql:42.5.0'
-
+    implementation 'com.github.javafaker:javafaker:1.0.2'
 }
 
 test {
