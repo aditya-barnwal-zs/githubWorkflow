@@ -5,7 +5,11 @@ import com.zs.assignments.assignment9.models.Student;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
 
 /**
  * Implements StudentDao to interact with the database.
