@@ -23,9 +23,11 @@ public class StudentController {
     public void runProgram() {
         LOGGER.info("Inserting a new Student in Table");
         Student student = new Student(1, "Aditya", "Barnwal");
-        studentService.createStudent(student);
+        Student student1 = studentService.createStudent(student);
+        LOGGER.info("{} | {} | {}", student1.getId(), student1.getFirstName(), student1.getLastName());
 
         LOGGER.info("Getting user details with id 1");
-        studentService.getStudentById(1);
+        student1 = studentService.getStudentById(1);
+        LOGGER.info("{} | {} | {}", student1.getId(), student1.getFirstName(), student1.getLastName());
     }
 }

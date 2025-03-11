@@ -20,12 +20,13 @@ public class StudentDaoImpl implements StudentDao {
 
     /**
      * Inserts a new student into the database.
+     *
      * @param student Student object to be inserted.
      * @return The inserted Student object if successful, otherwise null.
      */
     @Override
     public Student createStudent(Student student) {
-        String query = "INSERT INTO Student(id, firstName, secondName, VALUES ( ?, ?, ?)";
+        String query = "INSERT INTO Student(id, firstName, lastName) VALUES ( ?, ?, ?)";
         try {
             PreparedStatement preparedStatement = CONNECTION.prepareStatement(query);
             preparedStatement.setInt(1, student.getId());
@@ -41,12 +42,13 @@ public class StudentDaoImpl implements StudentDao {
 
     /**
      * Retrieves a student by their ID.
+     *
      * @param id Student ID.
      * @return Student object if found, otherwise null.
      */
     @Override
     public Student getStudentById(int id) {
-        String query = "SELECT FROM Student WHERE id = ?";
+        String query = "SELECT * FROM Student WHERE id = ?";
         try {
             PreparedStatement preparedStatement = CONNECTION.prepareStatement(query);
             preparedStatement.setInt(1, id);
