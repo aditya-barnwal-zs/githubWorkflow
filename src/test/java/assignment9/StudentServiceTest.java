@@ -20,7 +20,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void testCreateStudent_Success() {
+    void testCreateStudentSuccess() {
         Student student = new Student(1, "Aditya", "Barnwal");
 
         when(studentDao.createStudent(student)).thenReturn(student);
@@ -36,7 +36,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void testCreateStudent_Failure() {
+    void testCreateStudentFailure() {
         Student student = new Student(2, "Krishna", "Barnwal");
 
         when(studentDao.createStudent(student)).thenReturn(null);
@@ -48,7 +48,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void testGetStudentById_Success() {
+    void testGetStudentByIdSuccess() {
         Student student = new Student(1, "Aditya", "Barnwal");
 
         when(studentDao.getStudentById(1)).thenReturn(student);
@@ -64,7 +64,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void testGetStudentById_NotFound() {
+    void testGetStudentByIdNotFound() {
         when(studentDao.getStudentById(707)).thenReturn(null);
 
         Student retrievedStudent = studentService.getStudentById(707);
