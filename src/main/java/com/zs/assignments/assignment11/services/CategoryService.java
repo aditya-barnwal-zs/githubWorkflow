@@ -74,7 +74,9 @@ public class CategoryService {
 
         Category category = new Category();
         category.setName(categoryDTO.getName());
-
+        if (categoryRepository.existsByName(categoryDTO.getName())) {
+            throw new IllegalArgumentException("Category with this name already exists");
+        }
         Category createdCategory = categoryRepository.save(category);
         logger.info("Category created successfully with ID: {}", createdCategory.getId());
 
