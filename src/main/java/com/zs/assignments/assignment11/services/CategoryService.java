@@ -3,17 +3,27 @@ package com.zs.assignments.assignment11.services;
 import com.zs.assignments.assignment11.dto.CategoryDTO;
 import com.zs.assignments.assignment11.dto.DTOMapper;
 import com.zs.assignments.assignment11.entity.Category;
+import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
 import com.zs.assignments.assignment11.repository.CategoryRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Service layer for Category operations
+ * Handles business logic related to categories
+ */
 @Service
 public class CategoryService {
 
-    CategoryRepository categoryRepository;
-    DTOMapper dtoMapper;
+    private static final Logger logger = LogManager.getLogger(CategoryService.class);
+
+    private final CategoryRepository categoryRepository;
+    private final DTOMapper dtoMapper;
 
     @Autowired
     public CategoryService(CategoryRepository categoryRepository, DTOMapper dtoMapper) {
@@ -21,13 +31,53 @@ public class CategoryService {
         this.dtoMapper = dtoMapper;
     }
 
-    public List<CategoryDTO> getAllCategories(){
-        return dtoMapper.toCategoryDTOs(categoryRepository.findAll());
+    /**
+     * Get all categories
+     *
+     * @return List of all categories as DTOs
+     */
+    public List<CategoryDTO> getAllCategories() {
+        logger.info("Fetching all categories");
+        List<Category> categories = categoryRepository.findAll();
+        logger.debug("Found {} categories", categories.size());
+        return dtoMapper.toCategoryDTOs(categories);
     }
 
-    public CategoryDTO createCategory(CategoryDTO categoryDTO){
-        Category category= new Category();
+    /**
+     * Get a category by its ID
+     *
+     * @param id Category ID
+     * @return Category as DTO
+     * @throws CategoryNotFoundException if category is not found
+     */
+    public CategoryDTO getCategoryById(Long id) {
+        logger.info("Fetching category with ID: {}", id);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.error("Category not found with ID: {}", id);
+                    return new CategoryNotFoundException(id);
+                });
+
+        logger.debug("Found category: {}", category.getName());
+        return dtoMapper.toCategoryDTO(category);
+    }
+
+    /**
+     * Create a new category
+     *
+     * @param categoryDTO Category information
+     * @return Created category as DTO
+     */
+    @Transactional
+    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
+        logger.info("Creating new category: {}", categoryDTO.getName());
+
+        Category category = new Category();
         category.setName(categoryDTO.getName());
-        return dtoMapper.toCategoryDTO(categoryRepository.save(category));
+
+        Category createdCategory = categoryRepository.save(category);
+        logger.info("Category created successfully with ID: {}", createdCategory.getId());
+
+        return dtoMapper.toCategoryDTO(createdCategory);
     }
 }
