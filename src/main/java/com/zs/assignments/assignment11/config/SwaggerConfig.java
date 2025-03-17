@@ -35,9 +35,7 @@ public class SwaggerConfig {
                                 .email("aditya.barnwal@zopsmart.com"))
                         .license(new License()
                                 .name("Apache 2.0")
-                                .url("http://www.apache.org/licenses/LICENSE-2.0.html")))
-                .servers(List.of(
-                        new Server().url("http://localhost:8082").description("Development server")
-                ));
+                                .url("http://www.apache.org/licenses/LICENSE-2.0.html")));
+
     }
 }

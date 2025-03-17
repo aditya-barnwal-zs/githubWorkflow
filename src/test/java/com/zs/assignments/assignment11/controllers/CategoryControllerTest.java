@@ -83,7 +83,7 @@ public class CategoryControllerTest {
 
         mockMvc.perform(get("/api/v1/category/999")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                        .andExpect(status().isNotFound());
     }
 
     @Test
