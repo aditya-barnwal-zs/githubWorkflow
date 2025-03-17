@@ -141,7 +141,7 @@ public class ProductController {
             @Parameter(description = "Product ID", required = true)
             @PathVariable Long productId) {
         logger.info("REST request to delete Product : {}", productId);
-        ProductDTO result = productService.deleteProduct(productId);
-        return ResponseEntity.ok(result);
+        productService.deleteProduct(productId);
+        return ResponseEntity.noContent().build();
     }
 }

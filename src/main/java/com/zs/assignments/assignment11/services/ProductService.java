@@ -87,7 +87,7 @@ public class ProductService {
                 });
 
         Optional<Product> existingProduct = productRepository.findByName(productDTO.getName());
-        if (existingProduct.isPresent()) {
+        if (existingProduct != null && existingProduct.isPresent()) {
             logger.error("Product with name '{}' already exists", productDTO.getName());
             throw new ProductAlreadyExistsException(productDTO.getName(), "name");
         }
@@ -128,7 +128,7 @@ public class ProductService {
                 });
 
         Optional<Product> nameCheck = productRepository.findByName(productDTO.getName());
-        if (nameCheck.isPresent() && !nameCheck.get().getId().equals(productId)) {
+        if (nameCheck != null && nameCheck.isPresent() && !nameCheck.get().getId().equals(productId)) {
             logger.error("Another product with name '{}' already exists", productDTO.getName());
             throw new ProductAlreadyExistsException(productDTO.getName(), "name");
         }
@@ -147,10 +147,9 @@ public class ProductService {
      * Delete a product
      *
      * @param productId Product ID
-     * @return The deleted product as DTO
      */
     @Transactional
-    public ProductDTO deleteProduct(Long productId) {
+    public void deleteProduct(Long productId) {
         logger.info("Deleting product with ID: {}", productId);
 
         Product existingProduct = productRepository.findById(productId)
@@ -161,7 +160,5 @@ public class ProductService {
 
         productRepository.deleteById(productId);
         logger.info("Product deleted successfully: {}", productId);
-
-        return dtoMapper.toProductDTO(existingProduct);
     }
 }
