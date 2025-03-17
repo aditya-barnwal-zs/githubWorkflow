@@ -2,12 +2,14 @@ package com.zs.assignments.assignment11.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "Product")
+@Table(name = "products")
 public class Product {
 
     @Id
@@ -24,7 +26,6 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    public Product() {}
 
     public Product(String name, Double price, Category category) {
         this.name = name;

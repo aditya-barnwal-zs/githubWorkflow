@@ -2,12 +2,12 @@ package com.zs.assignments.assignment11;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+/**
+ * Entry point of the Application
+ */
 @SpringBootApplication
-public class Main {
+public class CatalogueApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
-//        System.out.println("Hello world");
-//        http://localhost:8082/swagger-ui.html
+        SpringApplication.run(CatalogueApplication.class, args);
     }
 }

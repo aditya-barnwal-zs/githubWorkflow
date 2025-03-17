@@ -2,18 +2,21 @@ package com.zs.assignments.assignment11.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "Category")
+@Table(name = "categories")
 public class Category {
 
     @Id
     @SequenceGenerator(
-            name="category_sequence",
+            name = "category_sequence",
             sequenceName = "category_sequence",
             allocationSize = 1
     )
@@ -29,7 +32,6 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
 
-    public Category() {}
 
     public Category(String name) {
         this.name = name;
