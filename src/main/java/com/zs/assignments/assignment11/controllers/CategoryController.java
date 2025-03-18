@@ -24,7 +24,7 @@ import java.util.List;
  * REST controller for managing categories
  */
 @RestController
-@RequestMapping(path = "api/v1/category")
+@RequestMapping(path = "api/v1/categories")
 @Tag(name = "Category", description = "Category management API")
 public class CategoryController {
 
@@ -85,14 +85,34 @@ public class CategoryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Category created successfully",
                     content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input")
+            @ApiResponse(responseCode = "409", description = "Category Already Exists")
     })
-    @PostMapping(path = "/create")
+    @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(
             @Parameter(description = "Category to create", required = true, schema = @Schema(implementation = CategoryDTO.class))
             @Valid @RequestBody CategoryDTO categoryDTO) {
         logger.info("REST request to create Category : {}", categoryDTO.getName());
         CategoryDTO result = categoryService.createCategory(categoryDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    /**
+     * DELETE /api/v1/category/{categoryId} : Delete a category
+     *
+     * @param id the id of the product to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @Operation(summary = "Delete a category", description = "Deletes an existing category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Category deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Category not found")
+    })
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteCategory(
+            @Parameter(description = "Category ID", required = true)
+            @PathVariable Long id) {
+        logger.info("REST request to delete Category : {}", id);
+        categoryService.deleteCategory(id);
+        return ResponseEntity.noContent().build();
     }
 }
