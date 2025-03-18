@@ -25,7 +25,7 @@ import java.util.List;
  * REST controller for managing products
  */
 @RestController
-@RequestMapping(path = "api/v1/product")
+@RequestMapping(path = "api/v1/products")
 @Tag(name = "Product", description = "Product management API")
 public class ProductController {
 
@@ -60,7 +60,7 @@ public class ProductController {
     /**
      * GET /api/v1/product/category/{id} : Get all products in a category
      *
-     * @param id Category ID
+     * @param categoryId Category ID
      * @return the ResponseEntity with status 200 (OK) and the list of products
      */
     @Operation(summary = "Get products by category", description = "Returns all products in a specific category")
@@ -69,12 +69,12 @@ public class ProductController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)))),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
-    @GetMapping(path = "/category/{id}")
-    public ResponseEntity<List<ProductDTO>> getProductsByCategoryId(
+    @GetMapping(path = "/by-category/{categoryId}")
+    public ResponseEntity<List<ProductDTO>> getProductByCategoryId(
             @Parameter(description = "Category ID", required = true)
-            @PathVariable Long id) {
-        logger.info("REST request to get all Products for category ID: {}", id);
-        List<ProductDTO> products = productService.getAllProductsByCategoryId(id);
+            @PathVariable Long categoryId) {
+        logger.info("REST request to get all Products for category ID: {}", categoryId);
+        List<ProductDTO> products = productService.getAllProductsByCategoryId(categoryId);
         return ResponseEntity.ok(products);
     }
 
@@ -92,7 +92,7 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "Category not found"),
             @ApiResponse(responseCode = "409", description = "Product already exists")
     })
-    @PostMapping(path = "/create")
+    @PostMapping
     public ResponseEntity<ProductDTO> createProduct(
             @Parameter(description = "Product to create", required = true, schema = @Schema(implementation = ProductDTO.class))
             @Valid @RequestBody ProductDTO productDTO) {
@@ -115,33 +115,32 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "Product or Category not found"),
             @ApiResponse(responseCode = "409", description = "Product name already in use")
     })
-    @PutMapping(path = "/update")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(
             @Parameter(description = "Product to update", required = true, schema = @Schema(implementation = ProductDTO.class))
-            @Valid @RequestBody ProductDTO productDTO) {
-        logger.info("REST request to update Product : {}", productDTO.getId());
-        ProductDTO result = productService.updateProduct(productDTO, productDTO.getCategoryId(), productDTO.getId());
+            @PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
+        logger.info("REST request to update Product : {}", id);
+        ProductDTO result = productService.updateProduct(productDTO, productDTO.getCategoryId(), id);
         return ResponseEntity.ok(result);
     }
 
     /**
      * DELETE /api/v1/product/{productId} : Delete a product
      *
-     * @param productId the id of the product to delete
-     * @return the ResponseEntity with status 200 (OK) and the deleted product
+     * @param id the id of the product to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
     @Operation(summary = "Delete a product", description = "Deletes an existing product")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product deleted successfully",
-                    content = @Content(schema = @Schema(implementation = ProductDTO.class))),
+            @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
-    @DeleteMapping(path = "/{productId}")
-    public ResponseEntity<ProductDTO> deleteProduct(
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(
             @Parameter(description = "Product ID", required = true)
-            @PathVariable Long productId) {
-        logger.info("REST request to delete Product : {}", productId);
-        productService.deleteProduct(productId);
+            @PathVariable Long id) {
+        logger.info("REST request to delete Product : {}", id);
+        productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 }
