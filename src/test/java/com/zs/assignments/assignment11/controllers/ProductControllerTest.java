@@ -17,12 +17,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,7 +66,7 @@ public class ProductControllerTest {
         List<ProductDTO> products = Arrays.asList(productDTO1, productDTO2);
         when(productService.getAllProducts()).thenReturn(products);
 
-        mockMvc.perform(get("/api/v1/product")
+        mockMvc.perform(get("/api/v1/products")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -81,11 +82,10 @@ public class ProductControllerTest {
 
     @Test
     void shouldGetProductsByCategoryId() throws Exception {
-        // Arrange
         List<ProductDTO> products = Arrays.asList(productDTO1, productDTO2);
         when(productService.getAllProductsByCategoryId(1L)).thenReturn(products);
 
-        mockMvc.perform(get("/api/v1/product/category/1")
+        mockMvc.perform(get("/api/v1/products/by-category/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -97,9 +97,9 @@ public class ProductControllerTest {
     void shouldReturn404WhenCategoryNotFoundForProducts() throws Exception {
         when(productService.getAllProductsByCategoryId(999L)).thenThrow(new CategoryNotFoundException(999L));
 
-        mockMvc.perform(get("/api/v1/product/category/999")
+        mockMvc.perform(get("/api/v1/products/by-category/999")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ProductControllerTest {
 
         when(productService.createProduct(any(ProductDTO.class), anyLong())).thenReturn(responseDTO);
 
-        mockMvc.perform(post("/api/v1/product/create")
+        mockMvc.perform(post("/api/v1/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(inputDTO)))
                 .andExpect(status().isCreated())
@@ -133,10 +133,10 @@ public class ProductControllerTest {
         invalidDTO.setPrice(799.99);
         invalidDTO.setCategoryId(1L);
 
-        mockMvc.perform(post("/api/v1/product/create")
+        mockMvc.perform(post("/api/v1/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidDTO)))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -155,7 +155,7 @@ public class ProductControllerTest {
 
         when(productService.updateProduct(any(ProductDTO.class), anyLong(), anyLong())).thenReturn(responseDTO);
 
-        mockMvc.perform(put("/api/v1/product/update")
+        mockMvc.perform(put("/api/v1/products/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(inputDTO)))
                 .andExpect(status().isOk())
@@ -167,21 +167,19 @@ public class ProductControllerTest {
 
     @Test
     void shouldDeleteProduct() throws Exception {
-        when(productService.deleteProduct(1L)).thenReturn(productDTO1);
+        doNothing().when(productService).deleteProduct(1L);
 
-        mockMvc.perform(delete("/api/v1/product/1")
+        mockMvc.perform(delete("/api/v1/products/1")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.name", is("Laptop")));
+                .andExpect(status().isNoContent()); // Response should be 204 No Content as per the controller
     }
 
     @Test
     void shouldReturn404WhenDeleteNonExistentProduct() throws Exception {
-        when(productService.deleteProduct(999L)).thenThrow(new ProductNotFoundException(999L));
+        doThrow(new ProductNotFoundException(999L)).when(productService).deleteProduct(999L);
 
-        mockMvc.perform(delete("/api/v1/product/999")
+        mockMvc.perform(delete("/api/v1/products/999")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isNotFound());
     }
 }

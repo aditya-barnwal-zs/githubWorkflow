@@ -241,15 +241,12 @@ public class ProductServiceTest {
     @Test
     void shouldDeleteProduct() {
         when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
-        when(dtoMapper.toProductDTO(product1)).thenReturn(productDTO1);
+        assertDoesNotThrow(() -> productService.deleteProduct(1L));
 
-        ProductDTO result = productService.deleteProduct(1L);
-
-        assertEquals(productDTO1, result);
         verify(productRepository).findById(1L);
         verify(productRepository).deleteById(1L);
-        verify(dtoMapper).toProductDTO(product1);
     }
+
 
     @Test
     void shouldThrowExceptionWhenDeleteNonExistentProduct() {
@@ -261,7 +258,178 @@ public class ProductServiceTest {
         );
 
         assertEquals("Product not found with id: 999", exception.getMessage());
+
         verify(productRepository).findById(999L);
         verify(productRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void shouldThrowProductNotFoundExceptionWhenUpdateNonExistentProduct() {
+        ProductDTO inputDTO = new ProductDTO();
+        inputDTO.setId(999L);
+        inputDTO.setName("Updated Product");
+        inputDTO.setPrice(799.99);
+        inputDTO.setCategoryId(1L);
+
+        when(productRepository.findById(999L)).thenReturn(Optional.empty());
+
+        ProductNotFoundException exception = assertThrows(
+                ProductNotFoundException.class,
+                () -> productService.updateProduct(inputDTO, 1L, 999L)
+        );
+
+        assertEquals("Product not found with id: 999", exception.getMessage());
+        verify(productRepository).findById(999L);
+        verify(categoryRepository, never()).findById(any());
+        verify(productRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldThrowCategoryNotFoundExceptionWhenUpdateWithNonExistentCategory() {
+        // Arrange
+        ProductDTO inputDTO = new ProductDTO();
+        inputDTO.setId(1L);
+        inputDTO.setName("Updated Laptop");
+        inputDTO.setPrice(1299.99);
+        inputDTO.setCategoryId(999L);
+
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
+        when(categoryRepository.findById(999L)).thenReturn(Optional.empty());
+
+        CategoryNotFoundException exception = assertThrows(
+                CategoryNotFoundException.class,
+                () -> productService.updateProduct(inputDTO, 999L, 1L)
+        );
+
+        assertEquals("Category not found with id: 999", exception.getMessage());
+        verify(productRepository).findById(1L);
+        verify(categoryRepository).findById(999L);
+        verify(productRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldThrowProductAlreadyExistsExceptionWhenUpdateWithExistingName() {
+        ProductDTO inputDTO = new ProductDTO();
+        inputDTO.setId(1L);
+        inputDTO.setName("Smartphone"); // Try to rename product1 to product2's name
+        inputDTO.setPrice(1299.99);
+        inputDTO.setCategoryId(1L);
+
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(productRepository.findByName("Smartphone")).thenReturn(Optional.of(product2));
+
+        ProductAlreadyExistsException exception = assertThrows(
+                ProductAlreadyExistsException.class,
+                () -> productService.updateProduct(inputDTO, 1L, 1L)
+        );
+
+        assertEquals("Product with name 'Smartphone' already exists", exception.getMessage());
+        verify(productRepository).findById(1L);
+        verify(categoryRepository).findById(1L);
+        verify(productRepository).findByName("Smartphone");
+        verify(productRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldAllowUpdateToSameNameForSameProduct() {
+        ProductDTO inputDTO = new ProductDTO();
+        inputDTO.setId(1L);
+        inputDTO.setName("Laptop"); // Same name as current
+        inputDTO.setPrice(1299.99);
+        inputDTO.setCategoryId(1L);
+
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(productRepository.findByName("Laptop")).thenReturn(Optional.of(product1));
+
+        Product updatedProduct = new Product();
+        updatedProduct.setId(1L);
+        updatedProduct.setName("Laptop");
+        updatedProduct.setPrice(1299.99);
+        updatedProduct.setCategory(category);
+
+        ProductDTO expectedDTO = new ProductDTO();
+        expectedDTO.setId(1L);
+        expectedDTO.setName("Laptop");
+        expectedDTO.setPrice(1299.99);
+        expectedDTO.setCategoryId(1L);
+
+        when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
+        when(dtoMapper.toProductDTO(updatedProduct)).thenReturn(expectedDTO);
+
+        ProductDTO result = productService.updateProduct(inputDTO, 1L, 1L);
+
+        assertEquals(expectedDTO, result);
+        verify(productRepository).findById(1L);
+        verify(categoryRepository).findById(1L);
+        verify(productRepository).findByName("Laptop");
+        verify(productRepository).save(any(Product.class));
+    }
+
+    @Test
+    void shouldCreateProductWhenProductNameDoesNotExist() {
+        ProductDTO inputDTO = new ProductDTO();
+        inputDTO.setName("New Product");
+        inputDTO.setPrice(799.99);
+        inputDTO.setCategoryId(1L);
+
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(productRepository.findByName("New Product")).thenReturn(Optional.empty());
+
+        Product savedProduct = new Product();
+        savedProduct.setId(3L);
+        savedProduct.setName("New Product");
+        savedProduct.setPrice(799.99);
+        savedProduct.setCategory(category);
+
+        ProductDTO expectedDTO = new ProductDTO();
+        expectedDTO.setId(3L);
+        expectedDTO.setName("New Product");
+        expectedDTO.setPrice(799.99);
+        expectedDTO.setCategoryId(1L);
+
+        when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
+        when(dtoMapper.toProductDTO(savedProduct)).thenReturn(expectedDTO);
+
+        ProductDTO result = productService.createProduct(inputDTO, 1L);
+
+        assertEquals(expectedDTO, result);
+        verify(categoryRepository).findById(1L);
+        verify(productRepository).findByName("New Product");
+        verify(productRepository).save(any(Product.class));
+    }
+
+    @Test
+    void shouldHandleNullResponseFromFindByNameDuringCreate() {
+        ProductDTO inputDTO = new ProductDTO();
+        inputDTO.setName("New Product");
+        inputDTO.setPrice(799.99);
+        inputDTO.setCategoryId(1L);
+
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(productRepository.findByName("New Product")).thenReturn(null); // Simulate null response
+
+        Product savedProduct = new Product();
+        savedProduct.setId(3L);
+        savedProduct.setName("New Product");
+        savedProduct.setPrice(799.99);
+        savedProduct.setCategory(category);
+
+        ProductDTO expectedDTO = new ProductDTO();
+        expectedDTO.setId(3L);
+        expectedDTO.setName("New Product");
+        expectedDTO.setPrice(799.99);
+        expectedDTO.setCategoryId(1L);
+
+        when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
+        when(dtoMapper.toProductDTO(savedProduct)).thenReturn(expectedDTO);
+
+        ProductDTO result = productService.createProduct(inputDTO, 1L);
+
+        assertEquals(expectedDTO, result);
+        verify(categoryRepository).findById(1L);
+        verify(productRepository).findByName("New Product");
+        verify(productRepository).save(any(Product.class));
     }
 }
