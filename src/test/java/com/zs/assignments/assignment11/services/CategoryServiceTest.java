@@ -3,6 +3,7 @@ package com.zs.assignments.assignment11.services;
 import com.zs.assignments.assignment11.dto.CategoryDTO;
 import com.zs.assignments.assignment11.dto.DTOMapper;
 import com.zs.assignments.assignment11.entity.Category;
+import com.zs.assignments.assignment11.exceptions.CategoryAlreadyExistsException;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
 import com.zs.assignments.assignment11.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -120,5 +121,49 @@ public class CategoryServiceTest {
         assertEquals(expectedDTO, result);
         verify(categoryRepository).save(any(Category.class));
         verify(dtoMapper).toCategoryDTO(savedCategory);
+    }
+
+    @Test
+    void shouldDeleteCategory() {
+        Long categoryId = 1L;
+        when(categoryRepository.existsById(categoryId)).thenReturn(true);
+        doNothing().when(categoryRepository).deleteById(categoryId);
+
+        categoryService.deleteCategory(categoryId);
+
+        verify(categoryRepository).existsById(categoryId);
+        verify(categoryRepository).deleteById(categoryId);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingNonExistentCategory() {
+        Long categoryId = 999L;
+        when(categoryRepository.existsById(categoryId)).thenReturn(false);
+
+        CategoryNotFoundException exception = assertThrows(
+                CategoryNotFoundException.class,
+                () -> categoryService.deleteCategory(categoryId)
+        );
+
+        assertEquals("Category not found with id: 999", exception.getMessage());
+        verify(categoryRepository).existsById(categoryId);
+        verify(categoryRepository, never()).deleteById(categoryId);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCreatingCategoryWithExistingName() {
+        CategoryDTO inputDTO = new CategoryDTO();
+        inputDTO.setName("Existing Category");
+
+        when(categoryRepository.existsByName("Existing Category")).thenReturn(true);
+
+        CategoryAlreadyExistsException exception = assertThrows(
+                CategoryAlreadyExistsException.class,
+                () -> categoryService.createCategory(inputDTO)
+        );
+
+        assertEquals("Category with this name already exists", exception.getMessage());
+        verify(categoryRepository).existsByName("Existing Category");
+        verify(categoryRepository, never()).save(any(Category.class));
     }
 }

@@ -19,9 +19,9 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,7 +56,7 @@ public class CategoryControllerTest {
         List<CategoryDTO> categories = Arrays.asList(categoryDTO1, categoryDTO2);
         when(categoryService.getAllCategories()).thenReturn(categories);
 
-        mockMvc.perform(get("/api/v1/category")
+        mockMvc.perform(get("/api/v1/categories")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -70,7 +70,7 @@ public class CategoryControllerTest {
     void shouldGetCategoryById() throws Exception {
         when(categoryService.getCategoryById(1L)).thenReturn(categoryDTO1);
 
-        mockMvc.perform(get("/api/v1/category/1")
+        mockMvc.perform(get("/api/v1/categories/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -81,9 +81,9 @@ public class CategoryControllerTest {
     void shouldReturn404WhenCategoryNotFound() throws Exception {
         when(categoryService.getCategoryById(999L)).thenThrow(new CategoryNotFoundException(999L));
 
-        mockMvc.perform(get("/api/v1/category/999")
+        mockMvc.perform(get("/api/v1/categories/999")
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isInternalServerError());
+                        .andExpect(status().isNotFound());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class CategoryControllerTest {
 
         when(categoryService.createCategory(any(CategoryDTO.class))).thenReturn(responseDTO);
 
-        mockMvc.perform(post("/api/v1/category/create")
+        mockMvc.perform(post("/api/v1/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(inputDTO)))
                 .andExpect(status().isCreated())
@@ -106,12 +106,21 @@ public class CategoryControllerTest {
     }
 
     @Test
-    void shouldReturn400WhenInvalidInput() throws Exception {
+    void shouldReturn400WhenCategoryInvalid() throws Exception {
         CategoryDTO invalidDTO = new CategoryDTO();
 
-        mockMvc.perform(post("/api/v1/category/create")
+        mockMvc.perform(post("/api/v1/categories")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidDTO)))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldDeleteCategory() throws Exception {
+        doNothing().when(categoryService).deleteCategory(1L);
+
+        mockMvc.perform(delete("/api/v1/categories/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent()); // Response should be 204 No Content as per the controller
     }
 }
