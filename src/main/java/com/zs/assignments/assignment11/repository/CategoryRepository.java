@@ -10,4 +10,3 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     boolean existsByName(@NotBlank(message = "Category name is required") String name);
 }
-

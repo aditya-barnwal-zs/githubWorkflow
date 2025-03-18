@@ -3,6 +3,7 @@ package com.zs.assignments.assignment11.services;
 import com.zs.assignments.assignment11.dto.CategoryDTO;
 import com.zs.assignments.assignment11.dto.DTOMapper;
 import com.zs.assignments.assignment11.entity.Category;
+import com.zs.assignments.assignment11.exceptions.CategoryAlreadyExistsException;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
 import com.zs.assignments.assignment11.repository.CategoryRepository;
 import org.apache.logging.log4j.LogManager;
@@ -75,11 +76,29 @@ public class CategoryService {
         Category category = new Category();
         category.setName(categoryDTO.getName());
         if (categoryRepository.existsByName(categoryDTO.getName())) {
-            throw new IllegalArgumentException("Category with this name already exists");
+            throw new CategoryAlreadyExistsException("Category with this name already exists");
         }
         Category createdCategory = categoryRepository.save(category);
         logger.info("Category created successfully with ID: {}", createdCategory.getId());
 
         return dtoMapper.toCategoryDTO(createdCategory);
+    }
+
+    /**
+     * Delete a category
+     *
+     * @param categoryId Product ID
+     */
+    @Transactional
+    public void deleteCategory(Long categoryId) {
+        logger.info("Deleting category with ID: {}", categoryId);
+
+        if (!categoryRepository.existsById(categoryId)) {
+            logger.error("Category not found with ID: {}", categoryId);
+            throw new CategoryNotFoundException(categoryId);
+        }
+
+        categoryRepository.deleteById(categoryId);
+        logger.info("Category deleted successfully: {}", categoryId);
     }
 }
