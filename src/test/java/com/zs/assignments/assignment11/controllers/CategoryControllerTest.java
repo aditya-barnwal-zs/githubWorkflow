@@ -1,7 +1,7 @@
 package com.zs.assignments.assignment11.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zs.assignments.assignment11.dto.CategoryDTO;
+import com.zs.assignments.assignment11.dto.CategoryResponse;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
 import com.zs.assignments.assignment11.services.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,23 +36,23 @@ public class CategoryControllerTest {
     @MockBean
     private CategoryService categoryService;
 
-    private CategoryDTO categoryDTO1;
-    private CategoryDTO categoryDTO2;
+    private CategoryResponse categoryResponse1;
+    private CategoryResponse categoryResponse2;
 
     @BeforeEach
     void setUp() {
-        categoryDTO1 = new CategoryDTO();
-        categoryDTO1.setId(1L);
-        categoryDTO1.setName("Electronics");
+        categoryResponse1 = new CategoryResponse();
+        categoryResponse1.setId(1L);
+        categoryResponse1.setName("Electronics");
 
-        categoryDTO2 = new CategoryDTO();
-        categoryDTO2.setId(2L);
-        categoryDTO2.setName("Clothing");
+        categoryResponse2 = new CategoryResponse();
+        categoryResponse2.setId(2L);
+        categoryResponse2.setName("Clothing");
     }
 
     @Test
     void shouldGetAllCategories() throws Exception {
-        List<CategoryDTO> categories = Arrays.asList(categoryDTO1, categoryDTO2);
+        List<CategoryResponse> categories = Arrays.asList(categoryResponse1, categoryResponse2);
         when(categoryService.getAllCategories()).thenReturn(categories);
 
         mockMvc.perform(get("/api/v1/categories")
@@ -68,7 +67,7 @@ public class CategoryControllerTest {
 
     @Test
     void shouldGetCategoryById() throws Exception {
-        when(categoryService.getCategoryById(1L)).thenReturn(categoryDTO1);
+        when(categoryService.getCategoryById(1L)).thenReturn(categoryResponse1);
 
         mockMvc.perform(get("/api/v1/categories/1")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -88,14 +87,14 @@ public class CategoryControllerTest {
 
     @Test
     void shouldCreateCategory() throws Exception {
-        CategoryDTO inputDTO = new CategoryDTO();
+        CategoryResponse inputDTO = new CategoryResponse();
         inputDTO.setName("New Category");
 
-        CategoryDTO responseDTO = new CategoryDTO();
+        CategoryResponse responseDTO = new CategoryResponse();
         responseDTO.setId(3L);
         responseDTO.setName("New Category");
 
-        when(categoryService.createCategory(any(CategoryDTO.class))).thenReturn(responseDTO);
+        when(categoryService.createCategory(any(CategoryResponse.class))).thenReturn(responseDTO);
 
         mockMvc.perform(post("/api/v1/categories")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -107,7 +106,7 @@ public class CategoryControllerTest {
 
     @Test
     void shouldReturn400WhenCategoryInvalid() throws Exception {
-        CategoryDTO invalidDTO = new CategoryDTO();
+        CategoryResponse invalidDTO = new CategoryResponse();
 
         mockMvc.perform(post("/api/v1/categories")
                         .contentType(MediaType.APPLICATION_JSON)

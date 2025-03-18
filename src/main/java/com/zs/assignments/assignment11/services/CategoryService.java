@@ -1,7 +1,7 @@
 package com.zs.assignments.assignment11.services;
 
-import com.zs.assignments.assignment11.dto.CategoryDTO;
-import com.zs.assignments.assignment11.dto.DTOMapper;
+import com.zs.assignments.assignment11.dto.CategoryResponse;
+import com.zs.assignments.assignment11.dto.ResponseMapper;
 import com.zs.assignments.assignment11.entity.Category;
 import com.zs.assignments.assignment11.exceptions.CategoryAlreadyExistsException;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
@@ -24,12 +24,12 @@ public class CategoryService {
     private static final Logger logger = LogManager.getLogger(CategoryService.class);
 
     private final CategoryRepository categoryRepository;
-    private final DTOMapper dtoMapper;
+    private final ResponseMapper responseMapper;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, DTOMapper dtoMapper) {
+    public CategoryService(CategoryRepository categoryRepository, ResponseMapper responseMapper) {
         this.categoryRepository = categoryRepository;
-        this.dtoMapper = dtoMapper;
+        this.responseMapper = responseMapper;
     }
 
     /**
@@ -37,11 +37,11 @@ public class CategoryService {
      *
      * @return List of all categories as DTOs
      */
-    public List<CategoryDTO> getAllCategories() {
+    public List<CategoryResponse> getAllCategories() {
         logger.info("Fetching all categories");
         List<Category> categories = categoryRepository.findAll();
         logger.debug("Found {} categories", categories.size());
-        return dtoMapper.toCategoryDTOs(categories);
+        return responseMapper.toCategoryDTOs(categories);
     }
 
     /**
@@ -51,7 +51,7 @@ public class CategoryService {
      * @return Category as DTO
      * @throws CategoryNotFoundException if category is not found
      */
-    public CategoryDTO getCategoryById(Long id) {
+    public CategoryResponse getCategoryById(Long id) {
         logger.info("Fetching category with ID: {}", id);
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> {
@@ -60,28 +60,28 @@ public class CategoryService {
                 });
 
         logger.debug("Found category: {}", category.getName());
-        return dtoMapper.toCategoryDTO(category);
+        return responseMapper.toCategoryDTO(category);
     }
 
     /**
      * Create a new category
      *
-     * @param categoryDTO Category information
+     * @param categoryResponse Category information
      * @return Created category as DTO
      */
     @Transactional
-    public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-        logger.info("Creating new category: {}", categoryDTO.getName());
+    public CategoryResponse createCategory(CategoryResponse categoryResponse) {
+        logger.info("Creating new category: {}", categoryResponse.getName());
 
         Category category = new Category();
-        category.setName(categoryDTO.getName());
-        if (categoryRepository.existsByName(categoryDTO.getName())) {
+        category.setName(categoryResponse.getName());
+        if (categoryRepository.existsByName(categoryResponse.getName())) {
             throw new CategoryAlreadyExistsException("Category with this name already exists");
         }
         Category createdCategory = categoryRepository.save(category);
         logger.info("Category created successfully with ID: {}", createdCategory.getId());
 
-        return dtoMapper.toCategoryDTO(createdCategory);
+        return responseMapper.toCategoryDTO(createdCategory);
     }
 
     /**

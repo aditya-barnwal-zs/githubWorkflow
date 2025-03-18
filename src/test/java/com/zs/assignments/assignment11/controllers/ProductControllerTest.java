@@ -1,10 +1,9 @@
 package com.zs.assignments.assignment11.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zs.assignments.assignment11.dto.DTOMapper;
-import com.zs.assignments.assignment11.dto.ProductDTO;
+import com.zs.assignments.assignment11.dto.ResponseMapper;
+import com.zs.assignments.assignment11.dto.ProductResponse;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
-import com.zs.assignments.assignment11.exceptions.ProductAlreadyExistsException;
 import com.zs.assignments.assignment11.exceptions.ProductNotFoundException;
 import com.zs.assignments.assignment11.services.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -41,29 +39,29 @@ public class ProductControllerTest {
     private ProductService productService;
 
     @MockBean
-    private DTOMapper dtoMapper;
+    private ResponseMapper responseMapper;
 
-    private ProductDTO productDTO1;
-    private ProductDTO productDTO2;
+    private ProductResponse productResponse1;
+    private ProductResponse productResponse2;
 
     @BeforeEach
     void setUp() {
-        productDTO1 = new ProductDTO();
-        productDTO1.setId(1L);
-        productDTO1.setName("Laptop");
-        productDTO1.setPrice(999.99);
-        productDTO1.setCategoryId(1L);
+        productResponse1 = new ProductResponse();
+        productResponse1.setId(1L);
+        productResponse1.setName("Laptop");
+        productResponse1.setPrice(999.99);
+        productResponse1.setCategoryId(1L);
 
-        productDTO2 = new ProductDTO();
-        productDTO2.setId(2L);
-        productDTO2.setName("Smartphone");
-        productDTO2.setPrice(599.99);
-        productDTO2.setCategoryId(1L);
+        productResponse2 = new ProductResponse();
+        productResponse2.setId(2L);
+        productResponse2.setName("Smartphone");
+        productResponse2.setPrice(599.99);
+        productResponse2.setCategoryId(1L);
     }
 
     @Test
     void shouldGetAllProducts() throws Exception {
-        List<ProductDTO> products = Arrays.asList(productDTO1, productDTO2);
+        List<ProductResponse> products = Arrays.asList(productResponse1, productResponse2);
         when(productService.getAllProducts()).thenReturn(products);
 
         mockMvc.perform(get("/api/v1/products")
@@ -82,7 +80,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldGetProductsByCategoryId() throws Exception {
-        List<ProductDTO> products = Arrays.asList(productDTO1, productDTO2);
+        List<ProductResponse> products = Arrays.asList(productResponse1, productResponse2);
         when(productService.getAllProductsByCategoryId(1L)).thenReturn(products);
 
         mockMvc.perform(get("/api/v1/products/by-category/1")
@@ -104,18 +102,18 @@ public class ProductControllerTest {
 
     @Test
     void shouldCreateProduct() throws Exception {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setName("New Product");
         inputDTO.setPrice(799.99);
         inputDTO.setCategoryId(1L);
 
-        ProductDTO responseDTO = new ProductDTO();
+        ProductResponse responseDTO = new ProductResponse();
         responseDTO.setId(3L);
         responseDTO.setName("New Product");
         responseDTO.setPrice(799.99);
         responseDTO.setCategoryId(1L);
 
-        when(productService.createProduct(any(ProductDTO.class), anyLong())).thenReturn(responseDTO);
+        when(productService.createProduct(any(ProductResponse.class), anyLong())).thenReturn(responseDTO);
 
         mockMvc.perform(post("/api/v1/products")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +127,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldReturn400WhenInvalidProductInput() throws Exception {
-        ProductDTO invalidDTO = new ProductDTO();
+        ProductResponse invalidDTO = new ProductResponse();
         invalidDTO.setPrice(799.99);
         invalidDTO.setCategoryId(1L);
 
@@ -141,19 +139,19 @@ public class ProductControllerTest {
 
     @Test
     void shouldUpdateProduct() throws Exception {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setId(1L);
         inputDTO.setName("Updated Laptop");
         inputDTO.setPrice(1299.99);
         inputDTO.setCategoryId(1L);
 
-        ProductDTO responseDTO = new ProductDTO();
+        ProductResponse responseDTO = new ProductResponse();
         responseDTO.setId(1L);
         responseDTO.setName("Updated Laptop");
         responseDTO.setPrice(1299.99);
         responseDTO.setCategoryId(1L);
 
-        when(productService.updateProduct(any(ProductDTO.class), anyLong(), anyLong())).thenReturn(responseDTO);
+        when(productService.updateProduct(any(ProductResponse.class), anyLong(), anyLong())).thenReturn(responseDTO);
 
         mockMvc.perform(put("/api/v1/products/1")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -1,7 +1,7 @@
 package com.zs.assignments.assignment11.services;
 
-import com.zs.assignments.assignment11.dto.DTOMapper;
-import com.zs.assignments.assignment11.dto.ProductDTO;
+import com.zs.assignments.assignment11.dto.ResponseMapper;
+import com.zs.assignments.assignment11.dto.ProductResponse;
 import com.zs.assignments.assignment11.entity.Category;
 import com.zs.assignments.assignment11.entity.Product;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
@@ -34,7 +34,7 @@ public class ProductServiceTest {
     private CategoryRepository categoryRepository;
 
     @Mock
-    private DTOMapper dtoMapper;
+    private ResponseMapper responseMapper;
 
     @InjectMocks
     private ProductService productService;
@@ -42,8 +42,8 @@ public class ProductServiceTest {
     private Category category;
     private Product product1;
     private Product product2;
-    private ProductDTO productDTO1;
-    private ProductDTO productDTO2;
+    private ProductResponse productResponse1;
+    private ProductResponse productResponse2;
 
     @BeforeEach
     void setUp() {
@@ -63,49 +63,49 @@ public class ProductServiceTest {
         product2.setPrice(599.99);
         product2.setCategory(category);
 
-        productDTO1 = new ProductDTO();
-        productDTO1.setId(1L);
-        productDTO1.setName("Laptop");
-        productDTO1.setPrice(999.99);
-        productDTO1.setCategoryId(1L);
+        productResponse1 = new ProductResponse();
+        productResponse1.setId(1L);
+        productResponse1.setName("Laptop");
+        productResponse1.setPrice(999.99);
+        productResponse1.setCategoryId(1L);
 
-        productDTO2 = new ProductDTO();
-        productDTO2.setId(2L);
-        productDTO2.setName("Smartphone");
-        productDTO2.setPrice(599.99);
-        productDTO2.setCategoryId(1L);
+        productResponse2 = new ProductResponse();
+        productResponse2.setId(2L);
+        productResponse2.setName("Smartphone");
+        productResponse2.setPrice(599.99);
+        productResponse2.setCategoryId(1L);
     }
 
     @Test
     void shouldGetAllProducts() {
         List<Product> products = Arrays.asList(product1, product2);
-        List<ProductDTO> expectedDTOs = Arrays.asList(productDTO1, productDTO2);
+        List<ProductResponse> expectedDTOs = Arrays.asList(productResponse1, productResponse2);
 
         when(productRepository.findAll()).thenReturn(products);
-        when(dtoMapper.toProductDTOs(products)).thenReturn(expectedDTOs);
+        when(responseMapper.toProductDTOs(products)).thenReturn(expectedDTOs);
 
-        List<ProductDTO> result = productService.getAllProducts();
+        List<ProductResponse> result = productService.getAllProducts();
 
         assertEquals(expectedDTOs, result);
         verify(productRepository).findAll();
-        verify(dtoMapper).toProductDTOs(products);
+        verify(responseMapper).toProductDTOs(products);
     }
 
     @Test
     void shouldGetAllProductsByCategoryId() {
         List<Product> products = Arrays.asList(product1, product2);
-        List<ProductDTO> expectedDTOs = Arrays.asList(productDTO1, productDTO2);
+        List<ProductResponse> expectedDTOs = Arrays.asList(productResponse1, productResponse2);
 
         when(categoryRepository.existsById(1L)).thenReturn(true);
         when(productRepository.findByCategoryId(1L)).thenReturn(products);
-        when(dtoMapper.toProductDTOs(products)).thenReturn(expectedDTOs);
+        when(responseMapper.toProductDTOs(products)).thenReturn(expectedDTOs);
 
-        List<ProductDTO> result = productService.getAllProductsByCategoryId(1L);
+        List<ProductResponse> result = productService.getAllProductsByCategoryId(1L);
 
         assertEquals(expectedDTOs, result);
         verify(categoryRepository).existsById(1L);
         verify(productRepository).findByCategoryId(1L);
-        verify(dtoMapper).toProductDTOs(products);
+        verify(responseMapper).toProductDTOs(products);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class ProductServiceTest {
 
     @Test
     void shouldCreateProduct() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setName("New Product");
         inputDTO.setPrice(799.99);
         inputDTO.setCategoryId(1L);
@@ -143,27 +143,27 @@ public class ProductServiceTest {
         savedProduct.setPrice(799.99);
         savedProduct.setCategory(category);
 
-        ProductDTO expectedDTO = new ProductDTO();
+        ProductResponse expectedDTO = new ProductResponse();
         expectedDTO.setId(3L);
         expectedDTO.setName("New Product");
         expectedDTO.setPrice(799.99);
         expectedDTO.setCategoryId(1L);
 
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
-        when(dtoMapper.toProductDTO(savedProduct)).thenReturn(expectedDTO);
+        when(responseMapper.toProductDTO(savedProduct)).thenReturn(expectedDTO);
 
-        ProductDTO result = productService.createProduct(inputDTO, 1L);
+        ProductResponse result = productService.createProduct(inputDTO, 1L);
 
         assertEquals(expectedDTO, result);
         verify(categoryRepository).findById(1L);
         verify(productRepository).findByName("New Product");
         verify(productRepository).save(any(Product.class));
-        verify(dtoMapper).toProductDTO(savedProduct);
+        verify(responseMapper).toProductDTO(savedProduct);
     }
 
     @Test
     void shouldThrowExceptionWhenCreateWithNonExistentCategory() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setName("New Product");
         inputDTO.setPrice(799.99);
         inputDTO.setCategoryId(999L);
@@ -182,7 +182,7 @@ public class ProductServiceTest {
 
     @Test
     void shouldThrowExceptionWhenProductNameExists() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setName("Laptop");
         inputDTO.setPrice(799.99);
         inputDTO.setCategoryId(1L);
@@ -203,7 +203,7 @@ public class ProductServiceTest {
 
     @Test
     void shouldUpdateProduct() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setId(1L);
         inputDTO.setName("Updated Laptop");
         inputDTO.setPrice(1299.99);
@@ -219,23 +219,23 @@ public class ProductServiceTest {
         updatedProduct.setPrice(1299.99);
         updatedProduct.setCategory(category);
 
-        ProductDTO expectedDTO = new ProductDTO();
+        ProductResponse expectedDTO = new ProductResponse();
         expectedDTO.setId(1L);
         expectedDTO.setName("Updated Laptop");
         expectedDTO.setPrice(1299.99);
         expectedDTO.setCategoryId(1L);
 
         when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
-        when(dtoMapper.toProductDTO(updatedProduct)).thenReturn(expectedDTO);
+        when(responseMapper.toProductDTO(updatedProduct)).thenReturn(expectedDTO);
 
-        ProductDTO result = productService.updateProduct(inputDTO, 1L, 1L);
+        ProductResponse result = productService.updateProduct(inputDTO, 1L, 1L);
 
         assertEquals(expectedDTO, result);
         verify(productRepository).findById(1L);
         verify(categoryRepository).findById(1L);
         verify(productRepository).findByName("Updated Laptop");
         verify(productRepository).save(any(Product.class));
-        verify(dtoMapper).toProductDTO(updatedProduct);
+        verify(responseMapper).toProductDTO(updatedProduct);
     }
 
     @Test
@@ -265,7 +265,7 @@ public class ProductServiceTest {
 
     @Test
     void shouldThrowProductNotFoundExceptionWhenUpdateNonExistentProduct() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setId(999L);
         inputDTO.setName("Updated Product");
         inputDTO.setPrice(799.99);
@@ -287,7 +287,7 @@ public class ProductServiceTest {
     @Test
     void shouldThrowCategoryNotFoundExceptionWhenUpdateWithNonExistentCategory() {
         // Arrange
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setId(1L);
         inputDTO.setName("Updated Laptop");
         inputDTO.setPrice(1299.99);
@@ -309,7 +309,7 @@ public class ProductServiceTest {
 
     @Test
     void shouldThrowProductAlreadyExistsExceptionWhenUpdateWithExistingName() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setId(1L);
         inputDTO.setName("Smartphone"); // Try to rename product1 to product2's name
         inputDTO.setPrice(1299.99);
@@ -333,7 +333,7 @@ public class ProductServiceTest {
 
     @Test
     void shouldAllowUpdateToSameNameForSameProduct() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setId(1L);
         inputDTO.setName("Laptop"); // Same name as current
         inputDTO.setPrice(1299.99);
@@ -349,16 +349,16 @@ public class ProductServiceTest {
         updatedProduct.setPrice(1299.99);
         updatedProduct.setCategory(category);
 
-        ProductDTO expectedDTO = new ProductDTO();
+        ProductResponse expectedDTO = new ProductResponse();
         expectedDTO.setId(1L);
         expectedDTO.setName("Laptop");
         expectedDTO.setPrice(1299.99);
         expectedDTO.setCategoryId(1L);
 
         when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
-        when(dtoMapper.toProductDTO(updatedProduct)).thenReturn(expectedDTO);
+        when(responseMapper.toProductDTO(updatedProduct)).thenReturn(expectedDTO);
 
-        ProductDTO result = productService.updateProduct(inputDTO, 1L, 1L);
+        ProductResponse result = productService.updateProduct(inputDTO, 1L, 1L);
 
         assertEquals(expectedDTO, result);
         verify(productRepository).findById(1L);
@@ -369,7 +369,7 @@ public class ProductServiceTest {
 
     @Test
     void shouldCreateProductWhenProductNameDoesNotExist() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setName("New Product");
         inputDTO.setPrice(799.99);
         inputDTO.setCategoryId(1L);
@@ -383,16 +383,16 @@ public class ProductServiceTest {
         savedProduct.setPrice(799.99);
         savedProduct.setCategory(category);
 
-        ProductDTO expectedDTO = new ProductDTO();
+        ProductResponse expectedDTO = new ProductResponse();
         expectedDTO.setId(3L);
         expectedDTO.setName("New Product");
         expectedDTO.setPrice(799.99);
         expectedDTO.setCategoryId(1L);
 
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
-        when(dtoMapper.toProductDTO(savedProduct)).thenReturn(expectedDTO);
+        when(responseMapper.toProductDTO(savedProduct)).thenReturn(expectedDTO);
 
-        ProductDTO result = productService.createProduct(inputDTO, 1L);
+        ProductResponse result = productService.createProduct(inputDTO, 1L);
 
         assertEquals(expectedDTO, result);
         verify(categoryRepository).findById(1L);
@@ -402,7 +402,7 @@ public class ProductServiceTest {
 
     @Test
     void shouldHandleNullResponseFromFindByNameDuringCreate() {
-        ProductDTO inputDTO = new ProductDTO();
+        ProductResponse inputDTO = new ProductResponse();
         inputDTO.setName("New Product");
         inputDTO.setPrice(799.99);
         inputDTO.setCategoryId(1L);
@@ -416,16 +416,16 @@ public class ProductServiceTest {
         savedProduct.setPrice(799.99);
         savedProduct.setCategory(category);
 
-        ProductDTO expectedDTO = new ProductDTO();
+        ProductResponse expectedDTO = new ProductResponse();
         expectedDTO.setId(3L);
         expectedDTO.setName("New Product");
         expectedDTO.setPrice(799.99);
         expectedDTO.setCategoryId(1L);
 
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
-        when(dtoMapper.toProductDTO(savedProduct)).thenReturn(expectedDTO);
+        when(responseMapper.toProductDTO(savedProduct)).thenReturn(expectedDTO);
 
-        ProductDTO result = productService.createProduct(inputDTO, 1L);
+        ProductResponse result = productService.createProduct(inputDTO, 1L);
 
         assertEquals(expectedDTO, result);
         verify(categoryRepository).findById(1L);

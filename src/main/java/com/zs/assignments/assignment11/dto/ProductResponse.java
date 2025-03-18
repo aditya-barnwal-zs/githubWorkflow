@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Positive;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTO {
+public class ProductResponse {
 
     private Long id;
 

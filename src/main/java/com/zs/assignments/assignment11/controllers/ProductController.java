@@ -1,7 +1,7 @@
 package com.zs.assignments.assignment11.controllers;
 
-import com.zs.assignments.assignment11.dto.DTOMapper;
-import com.zs.assignments.assignment11.dto.ProductDTO;
+import com.zs.assignments.assignment11.dto.ResponseMapper;
+import com.zs.assignments.assignment11.dto.ProductResponse;
 import com.zs.assignments.assignment11.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,12 +32,12 @@ public class ProductController {
     private static final Logger logger = LogManager.getLogger(ProductController.class);
 
     private final ProductService productService;
-    private final DTOMapper dtoMapper;
+    private final ResponseMapper responseMapper;
 
     @Autowired
-    public ProductController(ProductService productService, DTOMapper dtoMapper) {
+    public ProductController(ProductService productService, ResponseMapper responseMapper) {
         this.productService = productService;
-        this.dtoMapper = dtoMapper;
+        this.responseMapper = responseMapper;
     }
 
     /**
@@ -48,12 +48,12 @@ public class ProductController {
     @Operation(summary = "Get all products", description = "Returns a list of all products")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class))))
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class))))
     })
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
         logger.info("REST request to get all Products");
-        List<ProductDTO> products = productService.getAllProducts();
+        List<ProductResponse> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
 
@@ -66,61 +66,61 @@ public class ProductController {
     @Operation(summary = "Get products by category", description = "Returns all products in a specific category")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class)))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class)))),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @GetMapping(path = "/by-category/{categoryId}")
-    public ResponseEntity<List<ProductDTO>> getProductByCategoryId(
+    public ResponseEntity<List<ProductResponse>> getProductByCategoryId(
             @Parameter(description = "Category ID", required = true)
             @PathVariable Long categoryId) {
         logger.info("REST request to get all Products for category ID: {}", categoryId);
-        List<ProductDTO> products = productService.getAllProductsByCategoryId(categoryId);
+        List<ProductResponse> products = productService.getAllProductsByCategoryId(categoryId);
         return ResponseEntity.ok(products);
     }
 
     /**
      * POST /api/v1/product/create : Create a new product
      *
-     * @param productDTO the product to create
+     * @param productResponse the product to create
      * @return the ResponseEntity with status 201 (Created) and the new product
      */
     @Operation(summary = "Create a product", description = "Creates a new product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Product created successfully",
-                    content = @Content(schema = @Schema(implementation = ProductDTO.class))),
+                    content = @Content(schema = @Schema(implementation = ProductResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "Category not found"),
             @ApiResponse(responseCode = "409", description = "Product already exists")
     })
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(
-            @Parameter(description = "Product to create", required = true, schema = @Schema(implementation = ProductDTO.class))
-            @Valid @RequestBody ProductDTO productDTO) {
-        logger.info("REST request to create Product : {}", productDTO.getName());
-        ProductDTO result = productService.createProduct(productDTO, productDTO.getCategoryId());
+    public ResponseEntity<ProductResponse> createProduct(
+            @Parameter(description = "Product to create", required = true, schema = @Schema(implementation = ProductResponse.class))
+            @Valid @RequestBody ProductResponse productResponse) {
+        logger.info("REST request to create Product : {}", productResponse.getName());
+        ProductResponse result = productService.createProduct(productResponse, productResponse.getCategoryId());
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     /**
      * PUT /api/v1/product/update : Update an existing product
      *
-     * @param productDTO the product to update
+     * @param productResponse the product to update
      * @return the ResponseEntity with status 200 (OK) and the updated product
      */
     @Operation(summary = "Update a product", description = "Updates an existing product")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product updated successfully",
-                    content = @Content(schema = @Schema(implementation = ProductDTO.class))),
+                    content = @Content(schema = @Schema(implementation = ProductResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "404", description = "Product or Category not found"),
             @ApiResponse(responseCode = "409", description = "Product name already in use")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(
-            @Parameter(description = "Product to update", required = true, schema = @Schema(implementation = ProductDTO.class))
-            @PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ProductResponse> updateProduct(
+            @Parameter(description = "Product to update", required = true, schema = @Schema(implementation = ProductResponse.class))
+            @PathVariable Long id, @Valid @RequestBody ProductResponse productResponse) {
         logger.info("REST request to update Product : {}", id);
-        ProductDTO result = productService.updateProduct(productDTO, productDTO.getCategoryId(), id);
+        ProductResponse result = productService.updateProduct(productResponse, productResponse.getCategoryId(), id);
         return ResponseEntity.ok(result);
     }
 

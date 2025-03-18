@@ -1,7 +1,7 @@
 package com.zs.assignments.assignment11.services;
 
-import com.zs.assignments.assignment11.dto.DTOMapper;
-import com.zs.assignments.assignment11.dto.ProductDTO;
+import com.zs.assignments.assignment11.dto.ResponseMapper;
+import com.zs.assignments.assignment11.dto.ProductResponse;
 import com.zs.assignments.assignment11.entity.Category;
 import com.zs.assignments.assignment11.entity.Product;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
@@ -29,13 +29,13 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final DTOMapper dtoMapper;
+    private final ResponseMapper responseMapper;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, DTOMapper dtoMapper) {
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ResponseMapper responseMapper) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
-        this.dtoMapper = dtoMapper;
+        this.responseMapper = responseMapper;
     }
 
     /**
@@ -43,11 +43,11 @@ public class ProductService {
      *
      * @return List of all products as DTOs
      */
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         logger.info("Fetching all products");
         List<Product> products = productRepository.findAll();
         logger.debug("Found {} products", products.size());
-        return dtoMapper.toProductDTOs(products);
+        return responseMapper.toProductDTOs(products);
     }
 
     /**
@@ -56,7 +56,7 @@ public class ProductService {
      * @param id Category ID
      * @return List of products in the specified category as DTOs
      */
-    public List<ProductDTO> getAllProductsByCategoryId(Long id) {
+    public List<ProductResponse> getAllProductsByCategoryId(Long id) {
         logger.info("Fetching all products for category ID: {}", id);
         if (!categoryRepository.existsById(id)) {
             logger.error("Category not found with ID: {}", id);
@@ -65,19 +65,19 @@ public class ProductService {
 
         List<Product> products = productRepository.findByCategoryId(id);
         logger.debug("Found {} products for category ID: {}", products.size(), id);
-        return dtoMapper.toProductDTOs(products);
+        return responseMapper.toProductDTOs(products);
     }
 
     /**
      * Create a new product
      *
-     * @param productDTO Product information
+     * @param productResponse Product information
      * @param categoryId Category ID
      * @return Created product as DTO
      */
     @Transactional
-    public ProductDTO createProduct(ProductDTO productDTO, Long categoryId) {
-        logger.info("Creating new product: {} in category ID: {}", productDTO.getName(), categoryId);
+    public ProductResponse createProduct(ProductResponse productResponse, Long categoryId) {
+        logger.info("Creating new product: {} in category ID: {}", productResponse.getName(), categoryId);
 
         // Check if category exists
         Category category = categoryRepository.findById(categoryId)
@@ -86,33 +86,33 @@ public class ProductService {
                     return new CategoryNotFoundException(categoryId);
                 });
 
-        Optional<Product> existingProduct = productRepository.findByName(productDTO.getName());
+        Optional<Product> existingProduct = productRepository.findByName(productResponse.getName());
         if (existingProduct != null && existingProduct.isPresent()) {
-            logger.error("Product with name '{}' already exists", productDTO.getName());
-            throw new ProductAlreadyExistsException(productDTO.getName(), "name");
+            logger.error("Product with name '{}' already exists", productResponse.getName());
+            throw new ProductAlreadyExistsException(productResponse.getName(), "name");
         }
 
         Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
+        product.setName(productResponse.getName());
+        product.setPrice(productResponse.getPrice());
         product.setCategory(category);
 
         Product createdProduct = productRepository.save(product);
         logger.info("Product created successfully with ID: {}", createdProduct.getId());
 
-        return dtoMapper.toProductDTO(createdProduct);
+        return responseMapper.toProductDTO(createdProduct);
     }
 
     /**
      * Update an existing product
      *
-     * @param productDTO Updated product information
+     * @param productResponse Updated product information
      * @param categoryId Category ID
      * @param productId  Product ID
      * @return Updated product as DTO
      */
     @Transactional
-    public ProductDTO updateProduct(ProductDTO productDTO, Long categoryId, Long productId) {
+    public ProductResponse updateProduct(ProductResponse productResponse, Long categoryId, Long productId) {
         logger.info("Updating product ID: {} with new data", productId);
 
         Product existingProduct = productRepository.findById(productId)
@@ -127,20 +127,20 @@ public class ProductService {
                     return new CategoryNotFoundException(categoryId);
                 });
 
-        Optional<Product> nameCheck = productRepository.findByName(productDTO.getName());
+        Optional<Product> nameCheck = productRepository.findByName(productResponse.getName());
         if (nameCheck != null && nameCheck.isPresent() && !nameCheck.get().getId().equals(productId)) {
-            logger.error("Another product with name '{}' already exists", productDTO.getName());
-            throw new ProductAlreadyExistsException(productDTO.getName(), "name");
+            logger.error("Another product with name '{}' already exists", productResponse.getName());
+            throw new ProductAlreadyExistsException(productResponse.getName(), "name");
         }
 
-        existingProduct.setName(productDTO.getName());
-        existingProduct.setPrice(productDTO.getPrice());
+        existingProduct.setName(productResponse.getName());
+        existingProduct.setPrice(productResponse.getPrice());
         existingProduct.setCategory(category);
 
         Product updatedProduct = productRepository.save(existingProduct);
         logger.info("Product updated successfully: {}", updatedProduct.getId());
 
-        return dtoMapper.toProductDTO(updatedProduct);
+        return responseMapper.toProductDTO(updatedProduct);
     }
 
     /**

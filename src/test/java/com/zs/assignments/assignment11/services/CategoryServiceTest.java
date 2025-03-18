@@ -1,7 +1,7 @@
 package com.zs.assignments.assignment11.services;
 
-import com.zs.assignments.assignment11.dto.CategoryDTO;
-import com.zs.assignments.assignment11.dto.DTOMapper;
+import com.zs.assignments.assignment11.dto.CategoryResponse;
+import com.zs.assignments.assignment11.dto.ResponseMapper;
 import com.zs.assignments.assignment11.entity.Category;
 import com.zs.assignments.assignment11.exceptions.CategoryAlreadyExistsException;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
@@ -28,15 +28,15 @@ public class CategoryServiceTest {
     private CategoryRepository categoryRepository;
 
     @Mock
-    private DTOMapper dtoMapper;
+    private ResponseMapper responseMapper;
 
     @InjectMocks
     private CategoryService categoryService;
 
     private Category category1;
     private Category category2;
-    private CategoryDTO categoryDTO1;
-    private CategoryDTO categoryDTO2;
+    private CategoryResponse categoryResponse1;
+    private CategoryResponse categoryResponse2;
 
     @BeforeEach
     void setUp() {
@@ -48,40 +48,40 @@ public class CategoryServiceTest {
         category2.setId(2L);
         category2.setName("Clothing");
 
-        categoryDTO1 = new CategoryDTO();
-        categoryDTO1.setId(1L);
-        categoryDTO1.setName("Electronics");
+        categoryResponse1 = new CategoryResponse();
+        categoryResponse1.setId(1L);
+        categoryResponse1.setName("Electronics");
 
-        categoryDTO2 = new CategoryDTO();
-        categoryDTO2.setId(2L);
-        categoryDTO2.setName("Clothing");
+        categoryResponse2 = new CategoryResponse();
+        categoryResponse2.setId(2L);
+        categoryResponse2.setName("Clothing");
     }
 
     @Test
     void shouldGetAllCategories() {
         List<Category> categories = Arrays.asList(category1, category2);
-        List<CategoryDTO> expectedDTOs = Arrays.asList(categoryDTO1, categoryDTO2);
+        List<CategoryResponse> expectedDTOs = Arrays.asList(categoryResponse1, categoryResponse2);
 
         when(categoryRepository.findAll()).thenReturn(categories);
-        when(dtoMapper.toCategoryDTOs(categories)).thenReturn(expectedDTOs);
+        when(responseMapper.toCategoryDTOs(categories)).thenReturn(expectedDTOs);
 
-        List<CategoryDTO> result = categoryService.getAllCategories();
+        List<CategoryResponse> result = categoryService.getAllCategories();
 
         assertEquals(expectedDTOs, result);
         verify(categoryRepository).findAll();
-        verify(dtoMapper).toCategoryDTOs(categories);
+        verify(responseMapper).toCategoryDTOs(categories);
     }
 
     @Test
     void shouldGetCategoryById() {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category1));
-        when(dtoMapper.toCategoryDTO(category1)).thenReturn(categoryDTO1);
+        when(responseMapper.toCategoryDTO(category1)).thenReturn(categoryResponse1);
 
-        CategoryDTO result = categoryService.getCategoryById(1L);
+        CategoryResponse result = categoryService.getCategoryById(1L);
 
-        assertEquals(categoryDTO1, result);
+        assertEquals(categoryResponse1, result);
         verify(categoryRepository).findById(1L);
-        verify(dtoMapper).toCategoryDTO(category1);
+        verify(responseMapper).toCategoryDTO(category1);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class CategoryServiceTest {
 
     @Test
     void shouldCreateCategory() {
-        CategoryDTO inputDTO = new CategoryDTO();
+        CategoryResponse inputDTO = new CategoryResponse();
         inputDTO.setName("New Category");
 
         Category newCategory = new Category();
@@ -109,18 +109,18 @@ public class CategoryServiceTest {
         savedCategory.setId(3L);
         savedCategory.setName("New Category");
 
-        CategoryDTO expectedDTO = new CategoryDTO();
+        CategoryResponse expectedDTO = new CategoryResponse();
         expectedDTO.setId(3L);
         expectedDTO.setName("New Category");
 
         when(categoryRepository.save(any(Category.class))).thenReturn(savedCategory);
-        when(dtoMapper.toCategoryDTO(savedCategory)).thenReturn(expectedDTO);
+        when(responseMapper.toCategoryDTO(savedCategory)).thenReturn(expectedDTO);
 
-        CategoryDTO result = categoryService.createCategory(inputDTO);
+        CategoryResponse result = categoryService.createCategory(inputDTO);
 
         assertEquals(expectedDTO, result);
         verify(categoryRepository).save(any(Category.class));
-        verify(dtoMapper).toCategoryDTO(savedCategory);
+        verify(responseMapper).toCategoryDTO(savedCategory);
     }
 
     @Test
@@ -152,7 +152,7 @@ public class CategoryServiceTest {
 
     @Test
     void shouldThrowExceptionWhenCreatingCategoryWithExistingName() {
-        CategoryDTO inputDTO = new CategoryDTO();
+        CategoryResponse inputDTO = new CategoryResponse();
         inputDTO.setName("Existing Category");
 
         when(categoryRepository.existsByName("Existing Category")).thenReturn(true);

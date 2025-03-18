@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * Mapper class to convert between entities and DTOs
  */
 @Component
-public class DTOMapper {
+public class ResponseMapper {
 
     /**
      * Convert Product entity to ProductDTO
@@ -19,8 +19,8 @@ public class DTOMapper {
      * @param product The product entity
      * @return ProductDTO
      */
-    public ProductDTO toProductDTO(Product product) {
-        ProductDTO dto = new ProductDTO();
+    public ProductResponse toProductDTO(Product product) {
+        ProductResponse dto = new ProductResponse();
         dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setPrice(product.getPrice());
@@ -34,7 +34,7 @@ public class DTOMapper {
      * @param products List of product entities
      * @return List of ProductDTOs
      */
-    public List<ProductDTO> toProductDTOs(List<Product> products) {
+    public List<ProductResponse> toProductDTOs(List<Product> products) {
         return products.stream()
                 .map(this::toProductDTO)
                 .collect(Collectors.toList());
@@ -46,8 +46,8 @@ public class DTOMapper {
      * @param category The category entity
      * @return CategoryDTO
      */
-    public CategoryDTO toCategoryDTO(Category category) {
-        CategoryDTO dto = new CategoryDTO();
+    public CategoryResponse toCategoryDTO(Category category) {
+        CategoryResponse dto = new CategoryResponse();
         dto.setId(category.getId());
         dto.setName(category.getName());
         return dto;
@@ -59,7 +59,7 @@ public class DTOMapper {
      * @param categories List of category entities
      * @return List of CategoryDTOs
      */
-    public List<CategoryDTO> toCategoryDTOs(List<Category> categories) {
+    public List<CategoryResponse> toCategoryDTOs(List<Category> categories) {
         return categories.stream()
                 .map(this::toCategoryDTO)
                 .collect(Collectors.toList());

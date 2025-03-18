@@ -1,6 +1,6 @@
 package com.zs.assignments.assignment11.controllers;
 
-import com.zs.assignments.assignment11.dto.CategoryDTO;
+import com.zs.assignments.assignment11.dto.CategoryResponse;
 import com.zs.assignments.assignment11.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,12 +45,12 @@ public class CategoryController {
     @Operation(summary = "Get all categories", description = "Returns a list of all categories")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryDTO.class))))
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = CategoryResponse.class))))
     })
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         logger.info("REST request to get all Categories");
-        List<CategoryDTO> categories = categoryService.getAllCategories();
+        List<CategoryResponse> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 
@@ -63,36 +63,36 @@ public class CategoryController {
     @Operation(summary = "Get category by ID", description = "Returns a specific category by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved category",
-                    content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
+                    content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryById(
+    public ResponseEntity<CategoryResponse> getCategoryById(
             @Parameter(description = "Category ID", required = true)
             @PathVariable Long id) {
         logger.info("REST request to get Category : {}", id);
-        CategoryDTO category = categoryService.getCategoryById(id);
+        CategoryResponse category = categoryService.getCategoryById(id);
         return ResponseEntity.ok(category);
     }
 
     /**
      * POST /api/v1/category/create : Create a new category
      *
-     * @param categoryDTO the category to create
+     * @param categoryResponse the category to create
      * @return the ResponseEntity with status 201 (Created) and the new category
      */
     @Operation(summary = "Create a category", description = "Creates a new category")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Category created successfully",
-                    content = @Content(schema = @Schema(implementation = CategoryDTO.class))),
+                    content = @Content(schema = @Schema(implementation = CategoryResponse.class))),
             @ApiResponse(responseCode = "409", description = "Category Already Exists")
     })
     @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(
-            @Parameter(description = "Category to create", required = true, schema = @Schema(implementation = CategoryDTO.class))
-            @Valid @RequestBody CategoryDTO categoryDTO) {
-        logger.info("REST request to create Category : {}", categoryDTO.getName());
-        CategoryDTO result = categoryService.createCategory(categoryDTO);
+    public ResponseEntity<CategoryResponse> createCategory(
+            @Parameter(description = "Category to create", required = true, schema = @Schema(implementation = CategoryResponse.class))
+            @Valid @RequestBody CategoryResponse categoryResponse) {
+        logger.info("REST request to create Category : {}", categoryResponse.getName());
+        CategoryResponse result = categoryService.createCategory(categoryResponse);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
