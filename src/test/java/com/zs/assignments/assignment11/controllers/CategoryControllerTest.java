@@ -2,6 +2,7 @@ package com.zs.assignments.assignment11.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zs.assignments.assignment11.dto.CategoryResponse;
+import com.zs.assignments.assignment11.dto.ProductResponse;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
 import com.zs.assignments.assignment11.services.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,9 @@ public class CategoryControllerTest {
     private CategoryResponse categoryResponse1;
     private CategoryResponse categoryResponse2;
 
+    private ProductResponse productResponse1;
+    private ProductResponse productResponse2;
+
     @BeforeEach
     void setUp() {
         categoryResponse1 = new CategoryResponse();
@@ -48,6 +52,18 @@ public class CategoryControllerTest {
         categoryResponse2 = new CategoryResponse();
         categoryResponse2.setId(2L);
         categoryResponse2.setName("Clothing");
+
+        productResponse1 = new ProductResponse();
+        productResponse1.setId(1L);
+        productResponse1.setName("Laptop");
+        productResponse1.setPrice(999.99);
+        productResponse1.setCategoryId(1L);
+
+        productResponse2 = new ProductResponse();
+        productResponse2.setId(2L);
+        productResponse2.setName("Smartphone");
+        productResponse2.setPrice(599.99);
+        productResponse2.setCategoryId(1L);
     }
 
     @Test
@@ -83,6 +99,28 @@ public class CategoryControllerTest {
         mockMvc.perform(get("/api/v1/categories/999")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldGetProductsByCategoryId() throws Exception {
+        List<ProductResponse> products = Arrays.asList(productResponse1, productResponse2);
+        when(categoryService.getAllProductsByCategoryId(1L)).thenReturn(products);
+
+        mockMvc.perform(get("/api/v1/categories/1/products")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[1].id", is(2)));
+    }
+
+    @Test
+    void shouldReturn404WhenCategoryNotFoundForProducts() throws Exception {
+        when(categoryService.getAllProductsByCategoryId(999L)).thenThrow(new CategoryNotFoundException(999L));
+
+        mockMvc.perform(get("/api/v1/categories/999/products")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test

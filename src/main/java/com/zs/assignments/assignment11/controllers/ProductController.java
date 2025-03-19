@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     /**
-     * GET /api/v1/product : Get all products
+     * GET /api/v1/products : Get all products
      *
      * @return the ResponseEntity with status 200 (OK) and the list of products
      */
@@ -58,28 +58,7 @@ public class ProductController {
     }
 
     /**
-     * GET /api/v1/product/category/{id} : Get all products in a category
-     *
-     * @param categoryId Category ID
-     * @return the ResponseEntity with status 200 (OK) and the list of products
-     */
-    @Operation(summary = "Get products by category", description = "Returns all products in a specific category")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class)))),
-            @ApiResponse(responseCode = "404", description = "Category not found")
-    })
-    @GetMapping(path = "/by-category/{categoryId}")
-    public ResponseEntity<List<ProductResponse>> getProductByCategoryId(
-            @Parameter(description = "Category ID", required = true)
-            @PathVariable Long categoryId) {
-        logger.info("REST request to get all Products for category ID: {}", categoryId);
-        List<ProductResponse> products = productService.getAllProductsByCategoryId(categoryId);
-        return ResponseEntity.ok(products);
-    }
-
-    /**
-     * POST /api/v1/product/create : Create a new product
+     * POST /api/v1/products : Create a new product
      *
      * @param productResponse the product to create
      * @return the ResponseEntity with status 201 (Created) and the new product
@@ -102,7 +81,7 @@ public class ProductController {
     }
 
     /**
-     * PUT /api/v1/product/update : Update an existing product
+     * PUT /api/v1/products : Update an existing product
      *
      * @param productResponse the product to update
      * @return the ResponseEntity with status 200 (OK) and the updated product
@@ -125,10 +104,10 @@ public class ProductController {
     }
 
     /**
-     * DELETE /api/v1/product/{productId} : Delete a product
+     * DELETE /api/v1/products/{productId} : Delete a product
      *
      * @param id the id of the product to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @return the ResponseEntity with status 204 (No Content)
      */
     @Operation(summary = "Delete a product", description = "Deletes an existing product")
     @ApiResponses(value = {

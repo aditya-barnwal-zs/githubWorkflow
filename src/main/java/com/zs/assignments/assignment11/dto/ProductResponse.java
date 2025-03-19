@@ -1,5 +1,6 @@
 package com.zs.assignments.assignment11.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ import jakarta.validation.constraints.Positive;
 @AllArgsConstructor
 public class ProductResponse {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @NotBlank(message = "Product name is required")

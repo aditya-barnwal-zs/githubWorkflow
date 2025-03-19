@@ -1,6 +1,7 @@
 package com.zs.assignments.assignment11.controllers;
 
 import com.zs.assignments.assignment11.dto.CategoryResponse;
+import com.zs.assignments.assignment11.dto.ProductResponse;
 import com.zs.assignments.assignment11.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,7 +39,7 @@ public class CategoryController {
     }
 
     /**
-     * GET /api/v1/category : Get all categories
+     * GET /api/v1/categories : Get all categories
      *
      * @return the ResponseEntity with status 200 (OK) and the list of categories
      */
@@ -55,7 +56,7 @@ public class CategoryController {
     }
 
     /**
-     * GET /api/v1/category/{id} : Get a specific category by ID
+     * GET /api/v1/categories/{id} : Get a specific category by ID
      *
      * @param id the ID of the category to retrieve
      * @return the ResponseEntity with status 200 (OK) and the category
@@ -76,7 +77,28 @@ public class CategoryController {
     }
 
     /**
-     * POST /api/v1/category/create : Create a new category
+     * GET /api/v1/categories/{id}/products : Get all products in a category
+     *
+     * @param id Category ID
+     * @return the ResponseEntity with status 200 (OK) and the list of products
+     */
+    @Operation(summary = "Get products by category", description = "Returns all products in a specific category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class)))),
+            @ApiResponse(responseCode = "404", description = "Category not found")
+    })
+    @GetMapping(path = "/{id}/products")
+    public ResponseEntity<List<ProductResponse>> getProductByCategoryId(
+            @Parameter(description = "Category ID", required = true)
+            @PathVariable Long id) {
+        logger.info("REST request to get all Products for category ID: {}", id);
+        List<ProductResponse> products = categoryService.getAllProductsByCategoryId(id);
+        return ResponseEntity.ok(products);
+    }
+
+    /**
+     * POST /api/v1/categories : Create a new category
      *
      * @param categoryResponse the category to create
      * @return the ResponseEntity with status 201 (Created) and the new category
@@ -97,7 +119,7 @@ public class CategoryController {
     }
 
     /**
-     * DELETE /api/v1/category/{categoryId} : Delete a category
+     * DELETE /api/v1/categories/{id} : Delete a category
      *
      * @param id the id of the product to delete
      * @return the ResponseEntity with status 200 (OK)

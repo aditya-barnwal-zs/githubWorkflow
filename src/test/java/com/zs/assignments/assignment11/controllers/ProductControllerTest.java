@@ -79,28 +79,6 @@ public class ProductControllerTest {
     }
 
     @Test
-    void shouldGetProductsByCategoryId() throws Exception {
-        List<ProductResponse> products = Arrays.asList(productResponse1, productResponse2);
-        when(productService.getAllProductsByCategoryId(1L)).thenReturn(products);
-
-        mockMvc.perform(get("/api/v1/products/by-category/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[1].id", is(2)));
-    }
-
-    @Test
-    void shouldReturn404WhenCategoryNotFoundForProducts() throws Exception {
-        when(productService.getAllProductsByCategoryId(999L)).thenThrow(new CategoryNotFoundException(999L));
-
-        mockMvc.perform(get("/api/v1/products/by-category/999")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     void shouldCreateProduct() throws Exception {
         ProductResponse inputDTO = new ProductResponse();
         inputDTO.setName("New Product");

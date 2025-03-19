@@ -51,24 +51,6 @@ public class ProductService {
     }
 
     /**
-     * Get all products in a specific category
-     *
-     * @param id Category ID
-     * @return List of products in the specified category as DTOs
-     */
-    public List<ProductResponse> getAllProductsByCategoryId(Long id) {
-        logger.info("Fetching all products for category ID: {}", id);
-        if (!categoryRepository.existsById(id)) {
-            logger.error("Category not found with ID: {}", id);
-            throw new CategoryNotFoundException(id);
-        }
-
-        List<Product> products = productRepository.findByCategoryId(id);
-        logger.debug("Found {} products for category ID: {}", products.size(), id);
-        return responseMapper.toProductDTOs(products);
-    }
-
-    /**
      * Create a new product
      *
      * @param productResponse Product information

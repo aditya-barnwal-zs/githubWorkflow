@@ -92,37 +92,6 @@ public class ProductServiceTest {
     }
 
     @Test
-    void shouldGetAllProductsByCategoryId() {
-        List<Product> products = Arrays.asList(product1, product2);
-        List<ProductResponse> expectedDTOs = Arrays.asList(productResponse1, productResponse2);
-
-        when(categoryRepository.existsById(1L)).thenReturn(true);
-        when(productRepository.findByCategoryId(1L)).thenReturn(products);
-        when(responseMapper.toProductDTOs(products)).thenReturn(expectedDTOs);
-
-        List<ProductResponse> result = productService.getAllProductsByCategoryId(1L);
-
-        assertEquals(expectedDTOs, result);
-        verify(categoryRepository).existsById(1L);
-        verify(productRepository).findByCategoryId(1L);
-        verify(responseMapper).toProductDTOs(products);
-    }
-
-    @Test
-    void shouldThrowExceptionWhenCategoryNotFoundForProducts() {
-        when(categoryRepository.existsById(999L)).thenReturn(false);
-
-        CategoryNotFoundException exception = assertThrows(
-                CategoryNotFoundException.class,
-                () -> productService.getAllProductsByCategoryId(999L)
-        );
-
-        assertEquals("Category not found with id: 999", exception.getMessage());
-        verify(categoryRepository).existsById(999L);
-        verify(productRepository, never()).findByCategoryId(any());
-    }
-
-    @Test
     void shouldCreateProduct() {
         ProductResponse inputDTO = new ProductResponse();
         inputDTO.setName("New Product");

@@ -1,11 +1,14 @@
 package com.zs.assignments.assignment11.services;
 
 import com.zs.assignments.assignment11.dto.CategoryResponse;
+import com.zs.assignments.assignment11.dto.ProductResponse;
 import com.zs.assignments.assignment11.dto.ResponseMapper;
 import com.zs.assignments.assignment11.entity.Category;
+import com.zs.assignments.assignment11.entity.Product;
 import com.zs.assignments.assignment11.exceptions.CategoryAlreadyExistsException;
 import com.zs.assignments.assignment11.exceptions.CategoryNotFoundException;
 import com.zs.assignments.assignment11.repository.CategoryRepository;
+import com.zs.assignments.assignment11.repository.ProductRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +27,13 @@ public class CategoryService {
     private static final Logger logger = LogManager.getLogger(CategoryService.class);
 
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
     private final ResponseMapper responseMapper;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, ResponseMapper responseMapper) {
+    public CategoryService(CategoryRepository categoryRepository, ProductRepository productRepository, ResponseMapper responseMapper) {
         this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
         this.responseMapper = responseMapper;
     }
 
@@ -61,6 +66,24 @@ public class CategoryService {
 
         logger.debug("Found category: {}", category.getName());
         return responseMapper.toCategoryDTO(category);
+    }
+
+    /**
+     * Get all products in a specific category
+     *
+     * @param id Category ID
+     * @return List of products in the specified category as DTOs
+     */
+    public List<ProductResponse> getAllProductsByCategoryId(Long id) {
+        logger.info("Fetching all products for category ID: {}", id);
+        if (!categoryRepository.existsById(id)) {
+            logger.error("Category not found with ID: {}", id);
+            throw new CategoryNotFoundException(id);
+        }
+
+        List<Product> products = productRepository.findByCategoryId(id);
+        logger.debug("Found {} products for category ID: {}", products.size(), id);
+        return responseMapper.toProductDTOs(products);
     }
 
     /**
