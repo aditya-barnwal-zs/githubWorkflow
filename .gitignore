@@ -7,9 +7,6 @@ build/
 gitlog.txt
 logs
 logs/app.log
-students.txt
-compressed.txt.gz
-decompressed.txt
 src/main/resources/application.properties
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -23,6 +20,7 @@ src/main/resources/application.properties
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+src/main/resources/Banner.txt
 
 ### Eclipse ###
 .apt_generated
