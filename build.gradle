@@ -39,7 +39,9 @@ test {
 jacoco {
     toolVersion = "0.8.10"
 }
-
+bootJar {
+    enabled = true
+}
 jacocoTestReport {
     dependsOn test
     reports {
