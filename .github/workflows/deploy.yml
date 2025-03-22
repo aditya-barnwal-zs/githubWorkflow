@@ -26,8 +26,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Run tests
-        run: ./gradlew test
+#      - name: Run tests
+#        run: ./gradlew test
 
       - name: Create artifact directory
         run: mkdir -p artifact && cp build/libs/*.jar artifact/application.jar
