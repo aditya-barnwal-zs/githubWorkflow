@@ -29,11 +29,12 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
-      - name: Create artifact
+      - name: Create artifact directory
         run: mkdir -p artifact && cp build/libs/*.jar artifact/application.jar
 
+      # Let's try a more recent version of upload-artifact
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: application-jar
           path: artifact/application.jar
@@ -47,7 +48,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           source: "artifact/application.jar"
-          target: "/home/${{ secrets.USERNAME }}/app"
+          target: "/home/${{ secrets.USERNAME }}"
+          strip_components: 1
 
       - name: Execute remote SSH commands
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -58,10 +60,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
+            mkdir -p /home/${{ secrets.USERNAME }}/app
             cd /home/${{ secrets.USERNAME }}/app
-            # Create properties file from secrets if not using application.properties from repo
+            # Create properties file from secrets
             echo "${{ secrets.APPLICATION_PROPERTIES }}" > application.properties
-            kill $(cat app.pid) || true
-            mv artifact/application.jar app.jar
+            kill $(cat app.pid) 2>/dev/null || true
+            mv /home/${{ secrets.USERNAME }}/application.jar app.jar
             nohup java -jar app.jar > app.log 2>&1 &
             echo $! > app.pid
