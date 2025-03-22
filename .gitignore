@@ -8,6 +8,7 @@ gitlog.txt
 logs
 logs/app.log
 src/main/resources/application.properties
+src/resources/Banner.txt
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml

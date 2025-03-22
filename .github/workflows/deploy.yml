@@ -1,0 +1,67 @@
+name: Spring Boot CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Create artifact
+        run: mkdir -p artifact && cp build/libs/*.jar artifact/application.jar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: application-jar
+          path: artifact/application.jar
+
+      - name: Deploy to EC2
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "artifact/application.jar"
+          target: "/home/${{ secrets.USERNAME }}/app"
+
+      - name: Execute remote SSH commands
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /home/${{ secrets.USERNAME }}/app
+            # Create properties file from secrets if not using application.properties from repo
+            echo "${{ secrets.APPLICATION_PROPERTIES }}" > application.properties
+            kill $(cat app.pid) || true
+            mv artifact/application.jar app.jar
+            nohup java -jar app.jar > app.log 2>&1 &
+            echo $! > app.pid
