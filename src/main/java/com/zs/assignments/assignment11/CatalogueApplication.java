@@ -28,4 +28,5 @@ public class CatalogueApplication {
         source.registerCorsConfiguration("/**", corsConfig);
         return new CorsFilter(source);
     }
+    // ec2 instance active
 }
