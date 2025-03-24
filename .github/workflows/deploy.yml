@@ -26,14 +26,38 @@ jobs:
       - name: Build with Gradle (skip tests)
         run: ./gradlew build -x test
 
+      - name: Debug build output
+        run: |
+          echo "Checking build output directory:"
+          ls -la build/libs/ || echo "No libs directory found"
+          find build -name "*.jar" || echo "No JAR files found in build directory"
+
       - name: Create artifact directory
-        run: mkdir -p artifact && cp build/libs/zs-assignments-1.0-SNAPSHOT.jar artifact/application.jar
+        run: |
+          mkdir -p artifact
+          cp build/libs/zs-assignments-1.0-SNAPSHOT.jar artifact/application.jar || { echo "Failed to copy JAR file"; exit 1; }
+          ls -la artifact/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: application-jar
           path: artifact/application.jar
+
+      - name: Setup SSH key
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+          echo "SSH key setup complete"
+
+      - name: Test SSH connection
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "echo 'SSH connection successful'"
+        continue-on-error: true
 
       - name: Deploy to EC2
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -46,6 +70,8 @@ jobs:
           source: "artifact/application.jar"
           target: "/home/${{ secrets.USERNAME }}"
           strip_components: 1
+          use_insecure_cipher: true
+          debug: true
 
       - name: Execute remote SSH commands
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
