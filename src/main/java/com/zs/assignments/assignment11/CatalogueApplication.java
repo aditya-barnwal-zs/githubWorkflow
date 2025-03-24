@@ -29,4 +29,5 @@ public class CatalogueApplication {
         return new CorsFilter(source);
     }
     // ec2 instance active
+    // docker container started
 }
