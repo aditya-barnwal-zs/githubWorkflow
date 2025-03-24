@@ -30,4 +30,5 @@ public class CatalogueApplication {
     }
     // ec2 instance active
     // docker container started
+    // try again
 }
